@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrenador FURP · País Federal 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1D2A2C; --ink-soft:#4E5F60;
+  --sage:#D6DBD2; --sage-deep:#B9C2B6; --paper:#FCFBF7;
+  --green:#33604F; --green-light:#E3EBE4;
+  --ocre:#B98A33; --ocre-light:#F3E7CE;
+  --rust:#8C3A34; --rust-light:#F2DEDB;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--sage);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;background:none;color:inherit}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+
+.shell{max-width:1180px;margin:0 auto;padding:28px 20px 64px}
+.masthead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:26px}
+.masthead h1{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:clamp(2rem,5vw,3.1rem);line-height:.95;letter-spacing:-.02em;margin:0}
+.masthead p{margin:6px 0 0;color:var(--ink-soft);max-width:46ch;font-size:.94rem}
+.countdown{text-align:right;font-family:'Fraunces',serif}
+.countdown b{display:block;font-size:2.6rem;line-height:1;font-weight:800;color:var(--green)}
+.countdown span{font-family:'IBM Plex Sans',sans-serif;font-size:.8rem;color:var(--ink-soft)}
+
+.layout{display:grid;grid-template-columns:264px 1fr;gap:34px;align-items:start}
+@media(max-width:860px){.layout{grid-template-columns:1fr;gap:22px}}
+
+.rail h2{font-family:'Fraunces',serif;font-size:.95rem;font-weight:600;margin:0 0 10px;color:var(--ink-soft)}
+.mod{display:block;width:100%;text-align:left;padding:9px 10px 9px 12px;border-left:3px solid transparent;margin-bottom:2px;transition:background .12s}
+.mod:hover{background:rgba(255,255,255,.45)}
+.mod.on{background:var(--paper);border-left-color:var(--green)}
+.mod .nm{font-weight:500;display:block;font-size:.93rem}
+.mod .mt{font-size:.74rem;color:var(--ink-soft);display:flex;justify-content:space-between;gap:8px;margin-top:2px}
+.bar{height:3px;background:var(--sage-deep);margin-top:6px;position:relative;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);width:0;transition:width .3s}
+.railfoot{margin-top:20px;padding-top:14px;border-top:1px solid var(--sage-deep)}
+.railfoot button{font-size:.82rem;color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px;padding:4px 0;display:block}
+.railfoot button:hover{color:var(--rust)}
+
+.modes{display:flex;flex-wrap:wrap;gap:0;margin-bottom:18px;border-bottom:1px solid var(--sage-deep)}
+.modes button{padding:8px 16px;font-size:.9rem;font-weight:500;color:var(--ink-soft);border-bottom:2px solid transparent;margin-bottom:-1px}
+.modes button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.stage{min-height:340px}
+
+.card{background:var(--paper);border-radius:2px 22px 2px 22px;box-shadow:0 1px 0 var(--sage-deep),0 14px 28px -22px rgba(29,42,44,.6);padding:38px 34px;min-height:290px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;position:relative}
+.card .side{font-size:.72rem;color:var(--ink-soft);position:absolute;top:14px;left:34px;letter-spacing:.04em}
+.card .num{font-size:.72rem;color:var(--ink-soft);position:absolute;top:14px;right:34px}
+.q{font-family:'Fraunces',serif;font-size:clamp(1.25rem,2.6vw,1.72rem);font-weight:600;line-height:1.25;max-width:32ch}
+.a{margin-top:20px;padding-top:18px;border-top:1px solid var(--sage-deep);font-size:1.08rem;max-width:46ch}
+.tip{margin-top:10px;font-size:.88rem;color:var(--ink-soft);max-width:52ch}
+.hintline{margin-top:22px;font-size:.82rem;color:var(--ink-soft)}
+.judge{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.judge button{padding:11px 20px;border-radius:2px;font-weight:500;font-size:.92rem;border:1.5px solid var(--ink)}
+.no{background:var(--rust-light);border-color:var(--rust)!important;color:var(--rust)}
+.yes{background:var(--green-light);border-color:var(--green)!important;color:var(--green)}
+.nav{display:flex;gap:16px;margin-top:16px;align-items:center;font-size:.85rem;color:var(--ink-soft);flex-wrap:wrap}
+.nav button{text-decoration:underline;text-underline-offset:3px}
+
+.opts{display:grid;gap:8px;margin-top:22px}
+.opt{text-align:left;padding:13px 16px;background:var(--paper);border:1.5px solid var(--sage-deep);border-radius:2px;font-size:.97rem;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.sprintbar{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;font-family:'Fraunces',serif}
+.sprintbar b{font-size:2rem;font-weight:800}
+.clock{color:var(--rust)}
+.bigbtn{background:var(--ink);color:var(--paper);padding:14px 26px;border-radius:2px;font-weight:500;font-size:1rem}
+.ghost{padding:12px 20px;border:1.5px solid var(--ink);border-radius:2px;font-weight:500}
+.empty{background:var(--paper);padding:40px 34px;border-radius:2px 22px 2px 22px}
+.empty h3{font-family:'Fraunces',serif;margin:0 0 8px;font-size:1.3rem}
+.empty p{margin:0;color:var(--ink-soft);max-width:48ch}
+
+/* pomodoro */
+.pomo{background:var(--paper);border-radius:2px 22px 2px 22px;padding:34px;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+@media(max-width:700px){.pomo{grid-template-columns:1fr}}
+.pomo .time{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(4rem,12vw,6.5rem);line-height:1;letter-spacing:-.03em}
+.pomo .phase{font-size:.9rem;color:var(--ink-soft);margin-bottom:6px}
+.pomo .phase.work{color:var(--green)}
+.pomo .phase.rest{color:var(--ocre)}
+.pomo .ctl{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.pomo .tally{margin-top:14px;font-size:.85rem;color:var(--ink-soft)}
+.pomo .tally i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--sage-deep);margin-right:5px;vertical-align:middle}
+.pomo .tally i.done{background:var(--green)}
+.pomo aside h3{font-family:'Fraunces',serif;font-size:1.1rem;margin:0 0 8px}
+.pomo aside p{margin:0 0 10px;font-size:.92rem;color:var(--ink-soft)}
+.pomo aside .go{margin-top:12px;padding:10px 16px;border:1.5px solid var(--green);color:var(--green);border-radius:2px;font-weight:500;font-size:.9rem}
+.pomo .cfg{display:flex;gap:6px;margin-top:16px;font-size:.82rem;color:var(--ink-soft);align-items:center;flex-wrap:wrap}
+.pomo .cfg button{padding:4px 10px;border:1px solid var(--sage-deep);border-radius:2px}
+.pomo .cfg button.on{border-color:var(--ink);color:var(--ink)}
+
+/* mapas */
+.map{background:var(--paper);border-radius:2px 22px 2px 22px;padding:30px 30px 26px}
+.map h3{font-family:'Fraunces',serif;font-size:1.5rem;margin:0;text-align:center}
+.map .sub{text-align:center;color:var(--ink-soft);font-size:.86rem;margin:4px 0 22px}
+.core{display:inline-block;background:var(--ink);color:var(--paper);padding:10px 22px;border-radius:2px;font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem}
+.trunk{width:2px;height:22px;background:var(--ink);margin:0 auto}
+.branches{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;border-top:2px solid var(--ink);padding-top:14px}
+.branch{position:relative;padding-top:10px}
+.branch:before{content:"";position:absolute;top:-14px;left:50%;width:2px;height:14px;background:var(--ink)}
+.branch h4{margin:0 0 8px;text-align:center;font-family:'Fraunces',serif;font-weight:600;font-size:.98rem;padding:7px 10px;border:1.5px solid var(--green);color:var(--green);border-radius:2px}
+.branch ul{margin:0;padding:0 0 0 12px;list-style:none;border-left:1.5px solid var(--sage-deep)}
+.branch li{font-size:.86rem;padding:4px 0 4px 8px;position:relative;line-height:1.4}
+.branch li:before{content:"";position:absolute;left:-12px;top:14px;width:8px;height:1.5px;background:var(--sage-deep)}
+.branch li b{font-weight:600}
+.mapnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.mapnav button{padding:6px 12px;border:1px solid var(--sage-deep);border-radius:2px;font-size:.84rem;background:var(--paper)}
+.mapnav button.on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+
+.plan{margin-top:44px;border-top:2px solid var(--ink);padding-top:20px}
+.plan h2{font-family:'Fraunces',serif;font-size:1.3rem;margin:0 0 4px}
+.plan>p{color:var(--ink-soft);font-size:.9rem;margin:0 0 18px;max-width:60ch}
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--sage-deep)}
+.day{background:var(--sage);padding:14px 14px 16px}
+.day h3{font-family:'Fraunces',serif;font-size:.95rem;margin:0 0 2px}
+.day time{font-size:.75rem;color:var(--ink-soft);display:block;margin-bottom:8px}
+.day p{margin:0;font-size:.86rem;line-height:1.45}
+.disclaimer{margin-top:26px;font-size:.82rem;color:var(--ink-soft);max-width:70ch;border-left:3px solid var(--ocre);padding-left:14px}
+
+.firma{margin-top:40px;padding-top:18px;border-top:1px solid var(--sage-deep);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
+.firma .name{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;letter-spacing:.01em}
+.firma .title{font-size:.78rem;color:var(--ink-soft);margin-top:2px}
+.firma .line{width:180px;border-top:1.5px solid var(--ink);padding-top:6px}
+.firma .right{text-align:right;font-size:.75rem;color:var(--ink-soft)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<header class="masthead">
+  <div>
+    <h1>Entrenador FURP</h1>
+    <p>Cultura general para el examen escrito del Seminario País Federal. Trece módulos, tarjetas, sprint, pomodoro y mapas.</p>
+  </div>
+  <div class="countdown"><b id="cd">–</b><span>días para el 12 de septiembre</span></div>
+</header>
+
+<div class="layout">
+  <aside class="rail">
+    <h2>Módulos</h2>
+    <div id="modlist"></div>
+    <div class="railfoot">
+      <button id="btnWrong">Repasar solo las falladas</button>
+      <button id="btnShuffle">Mezclar el orden</button>
+      <button id="btnReset">Borrar mi progreso</button>
+    </div>
+  </aside>
+
+  <main>
+    <nav class="modes">
+      <button data-mode="flash" class="on">Tarjetas</button>
+      <button data-mode="sprint">Sprint 90″</button>
+      <button data-mode="pomo">Pomodoro</button>
+      <button data-mode="map">Mapas</button>
+    </nav>
+    <div class="stage" id="stage"></div>
+  </main>
+</div>
+
+<section class="plan">
+  <h2>Los cuatro días que quedan</h2>
+  <p>Pomodoros de 25 minutos: uno de tarjetas nuevas, uno de repaso de falladas, alternados. Cerrá cada día con un sprint del módulo que más te costó.</p>
+  <div class="days">
+    <div class="day"><h3>Constitución, actualidad y economía</h3><time>Martes 8</time><p>Módulos 1, 2 y 3. Son los que más pesan y los que más cambiaron. Empezá por el mapa del módulo antes que las tarjetas.</p></div>
+    <div class="day"><h3>Historia argentina y universal</h3><time>Miércoles 9</time><p>Módulos 4 y 5. Fechas y nombres: el material más memorizable. Repaso de falladas del martes.</p></div>
+    <div class="day"><h3>Salta, mundo, letras y ciencia</h3><time>Jueves 10</time><p>A la noche: módulos 11 y 12 con lo que se dijo en Eramine y en el panel internacional. Después 6, 7, 8 y 9.</p></div>
+    <div class="day"><h3>Solo falladas + jornadas</h3><time>Viernes 11</time><p>Repaso cruzado de los doce módulos. Los módulos 11, 12 y 13 son la base de la entrevista: repasalos último. Escribí el ensayo cronometrado en 20 minutos. Verificá gabinete y noticias de la semana. Dormí.</p></div>
+  </div>
+  <p class="disclaimer">Los datos de actualidad están verificados al 8 de septiembre de 2026. Las preguntas marcadas con «★» reproducen o rodean temas que aparecieron en el examen anterior.</p>
+</section>
+
+<div class="firma">
+  <div class="line">
+    <div class="name">Ing. Pablo Sandoval</div>
+    <div class="title">Ingeniero en Informática · UCASAL</div>
+  </div>
+  <div class="right">Entrenador FURP · País Federal 2026<br>Salta, Argentina</div>
+</div>
+</div>
+
+<script>
+/* =========================================================
+   CONTENIDO  · [pregunta, respuesta, dato extra opcional]
+   ========================================================= */
+const M = [
+{n:"Constitución y Estado", s:"Organización institucional", c:[
+["¿En qué año se sancionó la Constitución Nacional argentina?","1853","En Santa Fe. Buenos Aires se incorporó en 1860."],
+["¿Cuál fue la última reforma constitucional?","1994","La convención sesionó en Santa Fe y Paraná."],
+["¿Cuántos artículos tiene la Constitución Nacional?","129 artículos, más disposiciones transitorias"],
+["Según el artículo 1, ¿qué forma de gobierno adopta la Nación?","Representativa, republicana y federal"],
+["¿Cuántas provincias tiene Argentina?","23 provincias más la Ciudad Autónoma de Buenos Aires"],
+["★ ¿Cuántos miembros componen el Congreso de la Nación?","329: 257 diputados y 72 senadores"],
+["¿Cuánto dura el mandato presidencial y cuántas reelecciones permite?","Cuatro años, con una sola reelección inmediata","Antes de 1994 eran seis años sin reelección inmediata."],
+["¿Qué requisitos exige la Constitución para ser Presidente?","Haber nacido en el país o ser hijo de ciudadano nativo, tener 30 años y seis años de ciudadanía"],
+["¿Cuántos diputados nacionales integran la Cámara?","257"],
+["¿Qué requisitos hay para ser diputado?","25 años, cuatro años de ciudadanía y ser natural de la provincia o tener dos años de residencia en ella"],
+["¿Cuántos senadores nacionales hay y cómo se distribuyen?","72: tres por cada provincia y tres por la Ciudad de Buenos Aires","Dos por la mayoría y uno por la primera minoría."],
+["¿Qué requisitos hay para ser senador?","30 años, seis años de ciudadanía y ser natural de la provincia o tener dos años de residencia"],
+["¿Cada cuánto se renueva la Cámara de Diputados?","Por mitades cada dos años; el mandato dura cuatro años"],
+["¿Cada cuánto se renueva el Senado?","Por tercios cada dos años; el mandato dura seis años"],
+["¿Quién preside el Senado de la Nación?","El Vicepresidente de la Nación","Solo vota en caso de empate."],
+["¿Quién es el presidente provisional del Senado?","Bartolomé Abdala","Es el tercero en la línea de sucesión presidencial."],
+["¿Quién preside la Cámara de Diputados?","Martín Menem","Cuarto en la línea de sucesión."],
+["¿Cuál es la línea de sucesión presidencial?","Vicepresidente, presidente provisional del Senado, presidente de Diputados","Ley de Acefalía 20.972."],
+["¿Cuándo es el período ordinario de sesiones del Congreso?","Del 1 de marzo al 30 de noviembre","El Presidente inaugura el período con la Asamblea Legislativa."],
+["¿Qué es el quórum en las cámaras?","La mayoría absoluta de los miembros presentes para poder sesionar"],
+["¿En qué cámara deben originarse las leyes de impuestos y de reclutamiento de tropas?","En la Cámara de Diputados"],
+["¿En qué cámara se origina la ley convenio de coparticipación federal?","En el Senado"],
+["¿Con qué mayoría insiste el Congreso frente a un veto presidencial?","Dos tercios de los votos en ambas cámaras","Si insiste, la ley queda promulgada."],
+["¿Qué es el veto parcial y qué exige la Constitución?","El Presidente puede observar parte de una ley y promulgar el resto solo si tiene autonomía normativa"],
+["¿Cuántos miembros debe tener la Corte Suprema según la ley vigente?","Cinco, según la Ley 26.183"],
+["¿Cómo se designa a un juez de la Corte Suprema?","El Presidente lo propone y necesita el acuerdo de dos tercios de los senadores presentes"],
+["¿Quién preside la Corte Suprema de Justicia?","Horacio Rosatti"],
+["¿Quiénes integran hoy la Corte Suprema?","Horacio Rosatti, Carlos Rosenkrantz y Ricardo Lorenzetti","Tres miembros en funciones sobre cinco cargos; dos vacantes."],
+["¿Hasta qué edad ejercen los jueces federales sin nuevo acuerdo?","Hasta los 75 años; después necesitan un nuevo acuerdo del Senado cada cinco años"],
+["En el juicio político, ¿qué rol cumple cada cámara?","Diputados acusa; el Senado juzga","Se necesitan dos tercios en ambas."],
+["¿Cuál es la función del Consejo de la Magistratura?","Seleccionar jueces y administrar el Poder Judicial","Artículo 114, incorporado en 1994."],
+["¿Cuántos ministerios tiene hoy el Poder Ejecutivo nacional?","Nueve","La Ley de Ministerios 22.520 fija su número y competencias."],
+["¿Ante quién es políticamente responsable el Jefe de Gabinete?","Ante el Congreso, que puede removerlo por moción de censura con mayoría absoluta de ambas cámaras"],
+["¿Qué obliga el artículo 101 de la Constitución?","Que el Jefe de Gabinete informe mensualmente al Congreso sobre la marcha del gobierno"],
+["¿Sobre qué materias no se pueden dictar decretos de necesidad y urgencia?","Penal, tributaria, electoral y régimen de partidos políticos"],
+["¿Qué ley regula el control de los DNU y qué comisión los revisa?","La Ley 26.122; la Comisión Bicameral Permanente de Trámite Legislativo"],
+["Nombrá tres institutos incorporados por la reforma de 1994","Jefe de Gabinete, Consejo de la Magistratura, tercer senador, ballotage, autonomía de CABA y jerarquía constitucional de tratados de derechos humanos"],
+["¿Cuándo se evita la segunda vuelta en una elección presidencial?","Con más del 45% de los votos afirmativos válidos, o con el 40% y una diferencia de diez puntos"],
+["¿Qué garantías consagra el artículo 43?","Amparo, hábeas corpus y hábeas data"],
+["¿Qué establece el artículo 14 bis?","Los derechos del trabajador, de los gremios y de la seguridad social","Fue incorporado por la reforma de 1957."],
+["¿Qué órgano regula el artículo 85?","La Auditoría General de la Nación, control externo del sector público"],
+["¿Qué órgano regula el artículo 86?","El Defensor del Pueblo de la Nación"],
+["¿Qué órgano regula el artículo 120?","El Ministerio Público, órgano independiente con autonomía funcional"],
+["¿Qué establece el artículo 75 inciso 22?","Otorga jerarquía constitucional a una serie de tratados internacionales de derechos humanos"],
+["¿Qué reconoce el artículo 75 inciso 17?","La preexistencia étnica y cultural de los pueblos indígenas argentinos"],
+["¿Qué artículo establece el régimen autónomo de la Ciudad de Buenos Aires?","El artículo 129"],
+["¿Quién dispone la intervención federal a una provincia?","El Congreso de la Nación","Artículo 75, inciso 31."],
+["¿Quién declara el estado de sitio por conmoción interior?","El Congreso; por ataque exterior, el Poder Ejecutivo con acuerdo del Senado"],
+["¿Qué regulan los artículos 39 y 40?","La iniciativa popular y la consulta popular"],
+["¿Qué fue el Pacto de Olivos?","El acuerdo de 1993 entre Menem y Alfonsín que habilitó la reforma de 1994"],
+["¿Qué estableció la Ley Sáenz Peña?","El voto universal, secreto y obligatorio para los varones, en 1912"],
+["¿Qué ley consagró el voto femenino y en qué año?","La Ley 13.010, en 1947","Las mujeres votaron por primera vez en 1951."],
+["¿Desde qué año pueden votar los argentinos de 16 años?","Desde 2012, por la Ley 26.774, de forma optativa"],
+["¿Qué sistema se usa para repartir bancas de diputados?","El sistema proporcional D'Hondt, por distrito, con piso del 3% del padrón"],
+["¿Qué cambió con la Boleta Única de Papel?","Reemplazó a la boleta partidaria; se estrenó a nivel nacional en las legislativas de 2025"],
+["¿Qué fines enumera el Preámbulo?","Constituir la unión nacional, afianzar la justicia, consolidar la paz interior, proveer a la defensa común, promover el bienestar general y asegurar los beneficios de la libertad"],
+["¿Qué poderes conservan las provincias?","Todo el poder no delegado expresamente a la Nación","Artículo 121."],
+["¿Qué son las PASO?","Las Primarias Abiertas, Simultáneas y Obligatorias, creadas en 2009 y suspendidas para las elecciones de 2025"],
+["¿Qué autoridad organiza las elecciones nacionales?","La Cámara Nacional Electoral y la Dirección Nacional Electoral"]
+]},
+
+{n:"Actualidad nacional", s:"Gobierno y política hoy", c:[
+["¿Quién es el Presidente de la Nación y desde cuándo?","Javier Milei, desde el 10 de diciembre de 2023"],
+["★ ¿Quién acompañó a Milei como candidata a vicepresidenta en 2023?","Victoria Villarruel","La fórmula ganó el balotaje frente a Sergio Massa con el 55,7%."],
+["¿Contra quién ganó Milei el balotaje de 2023?","Contra Sergio Massa, de Unión por la Patria"],
+["¿Quién es el Jefe de Gabinete de Ministros?","Diego Santilli","Desde fines de junio de 2026, en reemplazo de Manuel Adorni."],
+["¿Quiénes fueron los jefes de Gabinete de Milei en orden?","Nicolás Posse, Guillermo Francos, Manuel Adorni y Diego Santilli"],
+["¿Quién es el Ministro de Economía?","Luis Caputo"],
+["¿Quién es el Canciller?","Pablo Quirno","Reemplazó a Gerardo Werthein en octubre de 2025; antes fue Diana Mondino."],
+["★ ¿Quién es el Ministro de Justicia?","Juan Bautista Mahiques","Asumió el 5 de marzo de 2026 tras la renuncia de Mariano Cúneo Libarona."],
+["¿Quién es la Ministra de Seguridad?","Alejandra Monteoliva","Sucedió a Patricia Bullrich en diciembre de 2025."],
+["¿Quién es el Ministro de Defensa?","Carlos Presti","Teniente general, sucedió a Luis Petri."],
+["¿Quién conduce el Ministerio de Capital Humano?","Sandra Pettovello","Absorbió Educación, Trabajo, Desarrollo Social y Cultura."],
+["¿Quién es el Ministro de Salud?","Mario Lugones"],
+["¿Quién encabeza el Ministerio de Desregulación y Transformación del Estado?","Federico Sturzenegger"],
+["¿Quién ocupa la Secretaría General de la Presidencia?","Karina Milei"],
+["¿Quién preside el Banco Central?","Santiago Bausili"],
+["★ ¿Quién preside el Banco de la Nación Argentina?","Darío Wasserman","Desde diciembre de 2025, en reemplazo de Daniel Tillard."],
+["★ ¿Qué pasó con el Ministerio de las Mujeres, Géneros y Diversidad?","Fue eliminado en diciembre de 2023; su última ministra fue Ayelén Mazzina","Sus funciones pasaron a Capital Humano."],
+["¿Cuál es el partido del gobierno nacional?","La Libertad Avanza"],
+["¿Cuándo fueron las últimas elecciones legislativas y quién ganó?","El 26 de octubre de 2025; ganó La Libertad Avanza"],
+["¿En qué año son las próximas elecciones presidenciales?","2027"],
+["★ ¿Quién preside el bloque del PRO en Diputados?","Cristian Ritondo"],
+["¿Quién preside el PRO como partido?","Mauricio Macri"],
+["¿Quién es el principal referente de Unión por la Patria?","Cristina Fernández de Kirchner, condenada en la causa Vialidad y con prisión domiciliaria desde 2025"],
+["¿Qué fue la Ley Bases?","La ley de reforma del Estado de 2024: delegación de facultades, privatizaciones y RIGI"],
+["¿Qué fue el DNU 70/2023?","El megadecreto de desregulación económica del inicio del gobierno"],
+["¿Qué reformas impulsa el gobierno en 2026?","Reforma laboral, reforma impositiva y presupuesto"],
+["¿Qué cargo ocupa hoy Patricia Bullrich?","Senadora nacional"],
+["¿Quién es el asesor presidencial de mayor peso sin cargo ministerial?","Santiago Caputo"],
+["★ ¿Quién es el gobernador de Neuquén?","Rolando Figueroa","Electo en 2023, rompió con el Movimiento Popular Neuquino tras 60 años."],
+["¿Quién gobierna la provincia de Buenos Aires?","Axel Kicillof"],
+["¿Quién es el Jefe de Gobierno de la Ciudad de Buenos Aires?","Jorge Macri"],
+["¿Quién gobierna Córdoba?","Martín Llaryora"],
+["¿Quién gobierna Santa Fe?","Maximiliano Pullaro","Impulsó la reforma de la Constitución provincial en 2025."],
+["¿Quién gobierna Mendoza?","Alfredo Cornejo"],
+["¿Quién gobierna Tucumán?","Osvaldo Jaldo"],
+["¿Quién gobierna Jujuy?","Carlos Sadir"],
+["¿Quién gobierna Catamarca?","Raúl Jalil"],
+["¿Quién gobierna Entre Ríos?","Rogelio Frigerio"],
+["¿Quién gobierna Chubut?","Ignacio Torres"],
+["¿Quién gobierna Corrientes?","Juan Pablo Valdés","Sucedió a su hermano Gustavo Valdés en diciembre de 2025."],
+["¿Quién gobierna Santiago del Estero?","Elías Suárez","Sucedió a Gerardo Zamora en diciembre de 2025."],
+["¿Quién gobierna Río Negro?","Alberto Weretilneck"],
+["¿Quién gobierna Formosa?","Gildo Insfrán","En el cargo desde 1995."],
+["¿Quién gobierna Chaco?","Leandro Zdero"],
+["¿Quién gobierna Misiones?","Hugo Passalacqua"],
+["¿Quién gobierna La Rioja?","Ricardo Quintela"],
+["¿Quién gobierna San Juan?","Marcelo Orrego"],
+["¿Quién gobierna San Luis?","Claudio Poggi"],
+["¿Quién gobierna Santa Cruz?","Claudio Vidal"],
+["¿Quién gobierna Tierra del Fuego?","Gustavo Melella"],
+["¿Quién gobierna La Pampa?","Sergio Ziliotto"],
+["¿Qué reclamo histórico sostiene la Cancillería en el Atlántico Sur?","La soberanía sobre Malvinas, Georgias del Sur y Sandwich del Sur","Disposición transitoria primera de la Constitución."],
+["¿Qué reforma del Banco Central propuso el Gobierno en 2026?","Mayor independencia y fin del financiamiento monetario al Tesoro"],
+["¿Cuál es el principal sindicato del país y quién lo conduce?","La CGT, con una conducción colegiada renovada en 2025"],
+["¿Quién es el Procurador General de la Nación interino?","Eduardo Casal","Está interino desde 2017."]
+]},
+
+{n:"Economía argentina", s:"Números, regiones y producción", c:[
+["¿Cuánto marcó la inflación de julio de 2026?","2,1% mensual, 33,8% interanual y 19,3% acumulado en el año"],
+["¿Qué inflación anual proyecta el REM para el cierre de 2026?","Cerca del 30%"],
+["¿Qué mide el riesgo país y quién lo elabora?","La sobretasa de la deuda argentina frente a los bonos de EE.UU.; lo calcula JP Morgan con el índice EMBI"],
+["¿Qué ley rige la coparticipación federal?","La Ley 23.548, de 1988","La reforma de 1994 ordenó dictar una nueva, aún pendiente."],
+["¿Cuáles son los principales complejos exportadores?","Sojero, cerealero, cárnico, petróleo y gas, y minero"],
+["¿Qué es Vaca Muerta?","La formación de shale de petróleo y gas ubicada principalmente en Neuquén"],
+["★ ¿Qué provincias forman el triángulo del litio argentino?","Salta, Jujuy y Catamarca","El Triángulo del Litio sudamericano suma Chile y Bolivia."],
+["★ ¿Qué provincia lidera la producción de maní?","Córdoba, con cerca del 90% del total nacional","Argentina es uno de los mayores exportadores mundiales de maní."],
+["¿Qué provincia lidera la producción de vino?","Mendoza, con alrededor del 70% de la producción"],
+["¿Qué provincia lidera la producción de limón?","Tucumán, primer exportador mundial de limón"],
+["¿Qué provincia lidera la producción de yerba mate?","Misiones, seguida por Corrientes"],
+["¿Qué provincias lideran la producción de caña de azúcar?","Tucumán, Salta y Jujuy"],
+["¿Qué provincias producen tabaco?","Salta, Jujuy, Misiones y Corrientes"],
+["¿Qué provincias forman la zona núcleo agrícola?","Buenos Aires, Santa Fe y Córdoba"],
+["¿Dónde se concentra la producción de petróleo?","Neuquén (Vaca Muerta), Chubut, Santa Cruz y Mendoza"],
+["¿Qué provincia concentra los grandes proyectos de cobre?","San Juan, con Los Azules, Josemaría y Pachón; en Salta, Taca Taca"],
+["¿Dónde está el principal puerto agroexportador?","En el Gran Rosario, sobre el río Paraná"],
+["★ ¿Cuál es la ruta nacional más extensa?","La Ruta Nacional 40, con más de 5.000 km desde Cabo Vírgenes (Santa Cruz) hasta La Quiaca (Jujuy)"],
+["¿Qué ruta nacional une Buenos Aires con el norte hasta La Quiaca?","La Ruta Nacional 9","Pasa por Rosario, Córdoba, Tucumán, Salta y Jujuy."],
+["¿Qué ruta nacional recorre la costa atlántica hasta Ushuaia?","La Ruta Nacional 3"],
+["¿Qué es el RIGI?","El Régimen de Incentivo para Grandes Inversiones creado por la Ley Bases, con beneficios por 30 años"],
+["¿Qué organismo reemplazó a la AFIP?","ARCA, la Agencia de Recaudación y Control Aduanero, desde 2024"],
+["¿Qué son las retenciones?","Los derechos de exportación"],
+["¿Quién autoriza al Ejecutivo a contraer empréstitos?","El Congreso","Artículo 75, inciso 4."],
+["¿Cuál es la mayor partida del gasto público nacional?","Jubilaciones y pensiones"],
+["¿Qué es el superávit fiscal primario?","El resultado positivo de las cuentas públicas antes de pagar intereses de la deuda"],
+["¿Qué diferencia hay entre dólar MEP y contado con liquidación?","El MEP deja los dólares en el país; el CCL los transfiere al exterior"],
+["¿Qué es el cepo cambiario?","Las restricciones para comprar y girar divisas; se levantaron en buena parte en abril de 2025"],
+["¿Qué es la banda de flotación cambiaria?","El esquema de 2025 en el que el dólar oficial flota entre un piso y un techo que se ajustan mensualmente"],
+["¿Cuándo se creó el FMI y dónde tiene su sede?","En 1944, en Bretton Woods; sede en Washington"],
+["¿Quién dirige el FMI?","Kristalina Georgieva"],
+["¿Cuáles son los tres principales socios comerciales de Argentina?","Brasil, China y Estados Unidos"],
+["¿Qué es el swap con China?","Un intercambio de monedas con el Banco Popular de China que refuerza las reservas del BCRA"],
+["¿Qué fue la convertibilidad?","El régimen de la Ley 23.928 (1991) que fijó un peso igual a un dólar hasta 2001"],
+["¿Qué mide la línea de pobreza del INDEC?","El porcentaje de personas cuyos ingresos no cubren la canasta básica total"],
+["¿Qué es la balanza comercial?","La diferencia entre exportaciones e importaciones de bienes"],
+["¿Qué es el PBI?","El valor de todos los bienes y servicios finales producidos en un país en un año"],
+["¿Qué es el índice de Gini?","Una medida de desigualdad de ingresos: 0 es igualdad total y 1 desigualdad máxima"],
+["¿Cuántos jubilados aproximadamente paga la ANSES?","Alrededor de siete millones de jubilaciones y pensiones"],
+["¿Qué es la Cuenta Única del Tesoro?","La cuenta del Estado nacional en el Banco Nación donde se concentran los fondos públicos"],
+["★ ¿Qué tecnología permite las transacciones con criptomonedas?","Blockchain, una cadena de bloques distribuida e inmutable"],
+["¿Qué es Bitcoin y quién lo creó?","La primera criptomoneda, lanzada en 2009 bajo el seudónimo Satoshi Nakamoto"],
+["¿Qué es una stablecoin?","Una criptomoneda atada al valor de otro activo, generalmente el dólar"],
+["¿Qué es el Mercosur y cuándo nació?","El bloque comercial creado por el Tratado de Asunción en 1991"],
+["¿Qué provincia concentra la mayor parte del producto bruto?","Buenos Aires, seguida por la Ciudad de Buenos Aires"],
+["¿Cuál es la principal fuente de generación eléctrica del país?","La térmica a gas, seguida por la hidroeléctrica","La nuclear aporta cerca del 5% con Atucha I, II y Embalse."]
+]},
+
+{n:"Historia argentina", s:"De 1810 a hoy", c:[
+["¿Qué ocurrió el 25 de mayo de 1810?","Se formó la Primera Junta, tras la Revolución de Mayo","Presidida por Cornelio Saavedra."],
+["¿Qué se declaró el 9 de julio de 1816 y dónde?","La Independencia, en el Congreso de Tucumán"],
+["¿Cuándo y dónde creó Belgrano la bandera?","El 27 de febrero de 1812, en Rosario"],
+["¿Qué fue el Éxodo Jujeño?","La evacuación de Jujuy ordenada por Belgrano en agosto de 1812"],
+["¿Qué se conmemora el 24 de septiembre?","La batalla de Tucumán de 1812, ganada por Belgrano"],
+["¿Qué fue el Combate de San Lorenzo?","La primera acción de los Granaderos a Caballo, en febrero de 1813"],
+["¿Qué medidas tomó la Asamblea del Año XIII?","Libertad de vientres, fin del tributo indígena, abolición de títulos de nobleza y de la tortura"],
+["¿Quién escribió la letra y la música del Himno Nacional?","Letra de Vicente López y Planes, música de Blas Parera, 1813"],
+["¿Cuándo cruzó San Martín los Andes?","En 1817; venció en Chacabuco ese año"],
+["★ ¿Quién dirigió a las fuerzas independentistas en la batalla de Maipú?","José de San Martín, el 5 de abril de 1818","Selló la independencia de Chile."],
+["¿Qué otras batallas clave dio San Martín?","Chacabuco (1817) en Chile y la campaña del Perú, donde declaró la independencia en 1821"],
+["¿Quién fue el primer presidente de las Provincias Unidas?","Bernardino Rivadavia, en 1826"],
+["¿Qué fue el Pacto Federal de 1831?","El acuerdo entre Buenos Aires, Santa Fe y Entre Ríos que dio base a la Confederación"],
+["¿Quién gobernó Buenos Aires con la suma del poder público hasta 1852?","Juan Manuel de Rosas"],
+["¿Qué pasó en la batalla de Caseros?","En 1852 Urquiza derrotó a Rosas"],
+["¿Quién fue el primer presidente bajo la Constitución de 1853?","Justo José de Urquiza (1854-1860)"],
+["¿Qué definió la batalla de Pavón?","En 1861 Mitre se impuso a Urquiza y Buenos Aires lideró la unificación"],
+["¿Cómo se conoce a las presidencias de Mitre, Sarmiento y Avellaneda?","Las presidencias fundacionales (1862-1880)"],
+["¿Cuándo fue la Guerra de la Triple Alianza?","Entre 1865 y 1870, contra Paraguay"],
+["¿Cuándo se federalizó Buenos Aires?","En 1880, bajo Avellaneda, tras la derrota de Carlos Tejedor"],
+["¿Qué fue la Conquista del Desierto?","La campaña militar de 1879 de Julio A. Roca sobre los territorios indígenas del sur"],
+["¿Qué estableció la Ley 1420 de 1884?","Educación primaria obligatoria, gratuita, gradual y laica"],
+["¿Qué fue la Generación del 80?","La élite liberal y positivista que consolidó el Estado y el modelo agroexportador"],
+["¿Qué fue la Revolución del Parque?","El levantamiento de 1890 de la Unión Cívica que provocó la renuncia de Juárez Celman","De allí nació la UCR."],
+["¿Quién asumió tras la renuncia de Juárez Celman?","Carlos Pellegrini, su vicepresidente (1890-1892)"],
+["★ ¿Quién sucedió a Carlos Pellegrini en la presidencia?","Luis Sáenz Peña (1892-1895)","Renunció y lo completó José Evaristo Uriburu."],
+["¿Cuál es el orden de presidentes entre 1880 y 1916?","Roca, Juárez Celman, Pellegrini, L. Sáenz Peña, J. E. Uriburu, Roca, Quintana, Figueroa Alcorta, R. Sáenz Peña, Victorino de la Plaza"],
+["¿Qué fue la Ley de Residencia?","La ley de 1902 que permitía expulsar extranjeros por actividad sindical o anarquista"],
+["★ ¿Quién fue el primer diputado socialista de América?","Alfredo Palacios, electo por La Boca en 1904"],
+["¿Quién fundó el Partido Socialista argentino?","Juan B. Justo, en 1896"],
+["¿Quién fue el primer presidente electo por voto secreto y obligatorio?","Hipólito Yrigoyen, en 1916"],
+["¿Dónde y cuándo empezó la Reforma Universitaria?","★ En Córdoba, en 1918"],
+["¿Qué fue la Semana Trágica?","La represión de una huelga obrera en Buenos Aires en enero de 1919"],
+["¿Qué fue la Patagonia Rebelde?","La represión de huelgas rurales en Santa Cruz en 1921"],
+["¿Quién gobernó entre 1922 y 1928?","Marcelo T. de Alvear, radical"],
+["★ ¿Quién fue el primer presidente de facto de Argentina?","José Félix Uriburu, tras el golpe del 6 de septiembre de 1930 contra Yrigoyen"],
+["¿Qué se llama Década Infame?","El período de fraude y conservadurismo entre 1930 y 1943","Presidentes: Uriburu, Justo, Ortiz y Castillo."],
+["¿Qué fue el GOU?","El Grupo de Oficiales Unidos que dio el golpe de 1943; Perón integraba el grupo"],
+["¿Qué se conmemora el 17 de octubre?","El Día de la Lealtad, por la movilización de 1945 que liberó a Perón"],
+["¿En qué año llegó Perón a la presidencia por primera vez?","En 1946, con la fórmula Perón-Quijano"],
+["¿Qué reforma constitucional hizo el peronismo?","La de 1949, que habilitó la reelección indefinida; fue derogada en 1956"],
+["¿Qué fue la Revolución Libertadora?","El golpe de 1955 que derrocó a Perón, encabezado por Lonardi y luego Aramburu"],
+["¿Qué fue la reforma constitucional de 1957?","La convención que incorporó el artículo 14 bis"],
+["★ ¿Quién fue el candidato de la UCR del Pueblo en 1958?","Ricardo Balbín","Perdió frente a Arturo Frondizi, de la UCR Intransigente."],
+["¿Por qué se dividió el radicalismo en 1957?","En UCR Intransigente (Frondizi) y UCR del Pueblo (Balbín) por la posición frente al peronismo"],
+["¿Quién gobernó entre 1958 y 1962 y cómo terminó?","Arturo Frondizi; fue derrocado y lo reemplazó José María Guido"],
+["¿Quién gobernó entre 1963 y 1966?","Arturo Illia, radical del Pueblo; derrocado por Onganía"],
+["¿Qué fue la Noche de los Bastones Largos?","La represión de universidades en 1966 bajo Onganía"],
+["¿Qué fue el Cordobazo?","La rebelión obrero-estudiantil de mayo de 1969 contra Onganía"],
+["¿En qué año volvió Perón al poder?","En 1973; murió en 1974 y asumió Isabel Martínez de Perón"],
+["¿Quién fue Héctor Cámpora?","El presidente de 49 días en 1973 que habilitó el regreso de Perón"],
+["¿Qué ocurrió el 24 de marzo de 1976?","El golpe que instauró el Proceso de Reorganización Nacional, con Videla"],
+["¿Quiénes fueron los presidentes de facto entre 1976 y 1983?","Videla, Viola, Galtieri y Bignone"],
+["¿Cuánto duró la Guerra de Malvinas?","Del 2 de abril al 14 de junio de 1982"],
+["¿Cuándo volvió la democracia y quién asumió?","El 10 de diciembre de 1983, Raúl Alfonsín"],
+["¿Qué fue la CONADEP?","La comisión de 1983 que produjo el informe Nunca Más, presidida por Ernesto Sábato"],
+["¿Qué fue el Juicio a las Juntas?","El juicio de 1985 que condenó a los comandantes de la dictadura"],
+["¿Qué fue el Plan Austral?","El programa antiinflacionario de 1985 con una nueva moneda"],
+["¿Qué provocó la salida anticipada de Alfonsín?","La hiperinflación de 1989"],
+["¿Qué fue la convertibilidad?","Un peso igual a un dólar desde 1991, con Cavallo como ministro"],
+["¿Qué desencadenó la crisis de 2001?","El corralito y el ajuste; renunció De la Rúa y hubo cinco presidentes en pocos días"],
+["¿Quiénes gobernaron desde 2003?","Néstor Kirchner, Cristina Fernández, Macri, Alberto Fernández y Milei"],
+["★ ¿Quién fue la primera mujer electa gobernadora en Argentina?","Fabiana Ríos, en Tierra del Fuego, en 2007"],
+["¿Quién fue la primera mujer presidenta y la primera electa?","Isabel Perón fue la primera en ejercer (1974); Cristina Fernández la primera electa (2007)"],
+["¿Qué fueron las leyes de Obediencia Debida y Punto Final?","Leyes de fines de los ochenta que frenaron los juicios; fueron anuladas en 2003"],
+["¿Cuándo se reestatizó YPF?","En 2012, con la expropiación del 51% a Repsol"]
+]},
+
+{n:"Historia universal", s:"Del siglo XX a la Guerra Fría", c:[
+["¿Cuándo fue la Primera Guerra Mundial?","Entre 1914 y 1918","Detonante: el asesinato del archiduque Francisco Fernando en Sarajevo."],
+["¿Qué tratado cerró la Primera Guerra?","El Tratado de Versalles, en 1919"],
+["¿Qué fue la Revolución Rusa?","La caída del zar y la toma del poder bolchevique con Lenin, en 1917"],
+["¿Cuándo llegó Hitler al poder?","En 1933, como canciller de Alemania"],
+["¿Cuándo fue la Guerra Civil Española?","Entre 1936 y 1939; ganó Franco, que gobernó hasta 1975"],
+["¿Cuándo empezó la Segunda Guerra Mundial?","El 1 de septiembre de 1939, con la invasión alemana a Polonia"],
+["¿Qué fue Pearl Harbor?","El ataque japonés del 7 de diciembre de 1941 que metió a Estados Unidos en la guerra"],
+["¿Qué fue la batalla de Stalingrado?","La derrota alemana de 1942-43 que cambió el curso de la guerra en el este"],
+["★ ¿Qué batalla fue la Operación Overlord?","El desembarco de Normandía, el 6 de junio de 1944 (Día D)","Comandada por Eisenhower."],
+["¿Qué fue la Operación Barbarroja?","La invasión alemana a la Unión Soviética en junio de 1941"],
+["¿Cuándo cayeron las bombas atómicas?","Hiroshima el 6 de agosto y Nagasaki el 9 de agosto de 1945"],
+["¿Qué se decidió en Yalta y Potsdam?","El reparto de Europa y Alemania entre los aliados al final de la guerra, en 1945"],
+["★ ¿Qué Premio Nobel recibió Winston Churchill?","El Nobel de Literatura, en 1953","Por sus memorias y su oratoria."],
+["¿Quién fue Winston Churchill?","El primer ministro británico durante la Segunda Guerra Mundial"],
+["¿Cuándo se fundó la ONU y qué organismo reemplazó?","En 1945; reemplazó a la Liga de las Naciones de 1919"],
+["¿Qué fue el Plan Marshall?","La ayuda de Estados Unidos para reconstruir Europa occidental desde 1948"],
+["¿Cuándo se dividió Corea y cuándo fue la guerra?","Se dividió en 1945; la guerra fue de 1950 a 1953"],
+["¿Cuándo triunfó la Revolución China?","En 1949, con Mao Zedong"],
+["¿Cuándo triunfó la Revolución Cubana?","El 1 de enero de 1959, con Fidel Castro"],
+["¿Qué fue la crisis de los misiles?","El enfrentamiento de octubre de 1962 entre Kennedy y Jruschov por misiles soviéticos en Cuba"],
+["¿Qué fue el Sputnik?","El primer satélite artificial, lanzado por la URSS en 1957"],
+["¿Quién fue el primer ser humano en el espacio?","Yuri Gagarin, en 1961"],
+["★ ¿Cuándo llegó el Apolo 11 a la Luna?","El 20 de julio de 1969","Armstrong y Aldrin caminaron; Collins quedó en órbita."],
+["¿Cuándo se construyó y cayó el Muro de Berlín?","Se construyó en 1961 y cayó el 9 de noviembre de 1989"],
+["¿Cuándo fue asesinado John F. Kennedy?","El 22 de noviembre de 1963, en Dallas"],
+["¿Cuándo fue asesinado Martin Luther King?","En 1968, en Memphis"],
+["¿Qué fue Watergate?","El escándalo que forzó la renuncia de Nixon en 1974"],
+["¿Cuándo terminó la Guerra de Vietnam?","En 1975, con la caída de Saigón"],
+["¿Qué fue el golpe de Pinochet?","El derrocamiento de Salvador Allende en Chile, el 11 de septiembre de 1973"],
+["¿Qué fue la perestroika?","Las reformas de Gorbachov en la URSS desde 1985"],
+["¿Cuándo se disolvió la Unión Soviética?","El 25 de diciembre de 1991"],
+["★ ¿Quién fue el primer presidente de la Federación Rusa?","Boris Yeltsin (1991-1999)","Lo sucedió Vladimir Putin."],
+["¿Cuándo terminó el apartheid?","En 1994, con la elección de Nelson Mandela"],
+["¿Qué pasó el 11 de septiembre de 2001?","Los atentados de Al Qaeda en Estados Unidos que abrieron la guerra de Afganistán"],
+["¿Cuándo empezó la guerra de Rusia contra Ucrania?","Con la anexión de Crimea en 2014 y la invasión a gran escala del 24 de febrero de 2022"],
+["¿Qué fue el Brexit?","La salida del Reino Unido de la Unión Europea, votada en 2016 y efectiva en 2020"],
+["¿Cuándo fue la Revolución Francesa?","En 1789, con la toma de la Bastilla el 14 de julio"],
+["¿Cuándo fue la independencia de Estados Unidos?","El 4 de julio de 1776"],
+["¿Dónde fue derrotado Napoleón definitivamente?","En Waterloo, en 1815"],
+["¿Cuándo llegó Colón a América?","El 12 de octubre de 1492"],
+["¿Cuándo cayó Constantinopla?","En 1453, ante los otomanos"],
+["¿Qué inició la Reforma protestante?","Las 95 tesis de Lutero, en 1517"],
+["★ ¿Qué filósofo dijo «solo sé que no sé nada»?","Sócrates","Frase atribuida por Platón; Sócrates fue condenado a beber cicuta en 399 a.C."],
+["¿Quiénes fueron los tres grandes filósofos griegos y su relación?","Sócrates fue maestro de Platón, que fue maestro de Aristóteles"],
+["¿Quién dijo «pienso, luego existo»?","René Descartes, en el siglo XVII"],
+["¿Quién escribió El Capital y El Manifiesto Comunista?","Karl Marx, el segundo junto a Engels (1848)"],
+["¿Quién escribió El Príncipe?","Nicolás Maquiavelo, en 1513"],
+["¿Quién escribió El contrato social?","Jean-Jacques Rousseau, en 1762"],
+["¿Quién formuló la división de poderes?","Montesquieu, en El espíritu de las leyes (1748)"],
+["¿Quién escribió Leviatán?","Thomas Hobbes, en 1651"]
+]},
+
+{n:"Salta", s:"Tu provincia, tu ventaja", c:[
+["¿Quién es el gobernador de Salta?","Gustavo Sáenz","Asumió en 2019 y fue reelecto en 2023; su mandato termina en 2027."],
+["¿Quién es el vicegobernador de Salta?","Antonio Marocco"],
+["¿Quién es el Jefe de Gabinete de la provincia de Salta?","Sergio Camacho"],
+["¿Quién es el Ministro de Producción y Minería de Salta?","Ignacio Lupión"],
+["¿Quiénes son los senadores nacionales por Salta?","Tres bancas: verificá los nombres vigentes tras las elecciones de 2025 antes del examen","Dos por la mayoría y uno por la minoría; mandato hasta 2031."],
+["¿Quién es el intendente de la ciudad de Salta?","Emiliano Durand","Desde diciembre de 2023; anunció que buscará la reelección."],
+["¿Quién fue la intendenta anterior?","Bettina Romero, primera mujer en el cargo"],
+["¿Cuándo y quién fundó Salta?","El 16 de abril de 1582, Hernando de Lerma"],
+["¿Cuál es el nombre fundacional de la ciudad?","San Felipe y Santiago de Lerma en el Valle de Salta"],
+["¿Cuántos departamentos tiene la provincia?","23"],
+["¿Cómo está compuesta la Legislatura salteña?","Bicameral: 23 senadores, uno por departamento, y 60 diputados"],
+["¿Cuándo se reformó por última vez la Constitución de Salta?","En 2021, con la cláusula de una sola reelección para gobernador"],
+["¿Con cuántas provincias y países limita Salta?","Seis provincias y tres países: Chile, Bolivia y Paraguay","Es la provincia con más límites del país."],
+["¿Qué provincias limitan con Salta?","Jujuy, Formosa, Chaco, Santiago del Estero, Tucumán y Catamarca"],
+["¿Quién fue Martín Miguel de Güemes?","El gobernador de Salta que condujo la guerra gaucha; murió el 17 de junio de 1821"],
+["¿Qué se conmemora el 17 de junio?","La muerte de Güemes, Día del Héroe Nacional"],
+["¿Cuándo fue la batalla de Salta?","El 20 de febrero de 1813, ganada por Belgrano en Castañares"],
+["¿Dónde está el Monumento a Güemes?","Al pie del cerro San Bernardo"],
+["¿Cuál es la altura aproximada del cerro San Bernardo?","Cerca de 1.450 metros sobre el nivel del mar"],
+["¿Cuál es el punto más alto del Tren a las Nubes?","El viaducto La Polvorilla, a unos 4.200 metros, cerca de San Antonio de los Cobres"],
+["¿A qué provincia pertenece la Quebrada de Humahuaca?","A Jujuy, no a Salta","Patrimonio de la Humanidad desde 2003."],
+["¿Qué cepa de vino es emblema de Cafayate?","El torrontés"],
+["¿En qué región está Cafayate?","En los Valles Calchaquíes"],
+["¿Qué parques nacionales hay en Salta?","El Rey, Los Cardones y Baritú"],
+["¿Qué tiene de particular Baritú?","Es un parque de selva de yungas al que se accede cruzando territorio boliviano"],
+["¿Qué salares importantes tiene Salta?","Arizaro, Pocitos, Rincón y parte de las Salinas Grandes"],
+["¿Cuál es el principal proyecto de cobre de Salta?","Taca Taca, en el departamento Los Andes"],
+["¿Qué proyecto de oro opera en Salta?","Lindero, en la Puna"],
+["¿Cuáles son las principales producciones agrícolas?","Tabaco, poroto, soja, caña de azúcar y granos"],
+["¿Qué universidades tiene Salta capital?","La Universidad Nacional de Salta (1972) y la Universidad Católica de Salta (1963)"],
+["¿Cómo se llama el aeropuerto?","Aeropuerto Internacional Martín Miguel de Güemes"],
+["¿Qué ríos importantes atraviesan Salta?","Bermejo, Juramento y Pilcomayo"],
+["¿Qué se celebra del 6 al 15 de septiembre?","La fiesta del Señor y la Virgen del Milagro","Origen: el terremoto de 1692."],
+["¿Qué función cumple hoy el Cabildo?","Es el Museo Histórico del Norte"],
+["¿Qué museo alberga a los Niños del Llullaillaco?","El Museo de Arqueología de Alta Montaña (MAAM)"],
+["¿Cuál es el diario histórico de Salta?","El Tribuno"],
+["¿Qué festival se celebra en Cafayate?","La Serenata a Cafayate, en febrero"],
+["¿Qué conjunto folclórico salteño es el más conocido?","Los Chalchaleros"],
+["Nombrá tres escritores salteños","Juan Carlos Dávalos, Jaime Dávalos y Manuel J. Castilla"],
+["¿Quién fue Eduardo Falú?","Guitarrista y compositor salteño, autor de la Zamba de la Candelaria"],
+["¿Quién fue Gustavo «Cuchi» Leguizamón?","Compositor salteño, autor de Balderrama y La Pomeña con letra de Castilla"],
+["¿De qué colores es la bandera de Güemes?","Roja y negra"],
+["¿Qué pueblos de los Valles Calchaquíes son destinos clásicos?","Cachi, Molinos, Seclantás y Angastaco"],
+["¿Qué localidad es famosa por la Fiesta Nacional del Tamal?","Chicoana"],
+["¿Qué tramo del Qhapaq Ñan atraviesa Salta?","El camino inca, Patrimonio de la Humanidad desde 2014"],
+["¿Cuál es la población aproximada de Salta?","Alrededor de 1,4 millones según el censo de 2022"],
+["¿Qué región integra Salta?","El Noroeste Argentino, con Jujuy, Tucumán, Catamarca y Santiago del Estero"],
+["¿Qué comunidades originarias tienen presencia significativa?","Wichí, Guaraní, Kolla, Toba y Chorote, sobre todo en el Chaco salteño"],
+["¿Qué problema del Chaco salteño tuvo repercusión nacional?","La desnutrición infantil y la falta de agua en comunidades originarias"],
+["¿Qué es Orán y por qué importa?","San Ramón de la Nueva Orán, la segunda ciudad de la provincia, centro azucarero y citrícola"],
+["¿Qué ciudad salteña está en la frontera con Bolivia?","Salvador Mazza, frente a Yacuiba"],
+["¿Cuál es el paso internacional a Chile desde Salta?","El Paso de Sico y el Paso de Jama (por Jujuy)"]
+]},
+
+{n:"Mundo", s:"Geopolítica y organismos", c:[
+["¿Cuándo se creó la ONU y cuántos miembros tiene?","En 1945; 193 Estados miembros"],
+["¿Dónde está la sede de la ONU?","En Nueva York"],
+["¿Quién es el Secretario General de la ONU?","António Guterres","Su mandato termina en diciembre de 2026."],
+["¿Cómo se compone el Consejo de Seguridad?","Quince miembros: cinco permanentes con veto y diez no permanentes"],
+["¿Cuáles son los cinco permanentes?","Estados Unidos, Rusia, China, Reino Unido y Francia"],
+["¿Cuándo se creó la OEA y dónde tiene sede?","En 1948; en Washington"],
+["★ ¿Quién es el Secretario General de la OEA?","Albert Ramdin, de Surinam","Asumió en mayo de 2025, sucediendo a Luis Almagro."],
+["¿Qué países integran el Mercosur como miembros plenos?","Argentina, Brasil, Paraguay, Uruguay y Bolivia","Venezuela está suspendida desde 2016."],
+["¿Cuántos países integran la Unión Europea?","27"],
+["¿Qué es la OTAN y qué vínculo tiene Argentina?","La alianza militar de 1949; Argentina es aliado extra-OTAN desde 1998"],
+["¿Qué países latinoamericanos integran el G20?","Argentina, Brasil y México"],
+["★ ¿Quién preside el G20 en 2026?","Estados Unidos","Sudáfrica lo presidió en 2025 y Brasil en 2024."],
+["¿Cuándo presidió Argentina el G20?","En 2018, con cumbre en Buenos Aires; fue el primer país sudamericano en hacerlo"],
+["¿Qué decidió Argentina respecto de los BRICS?","Declinó incorporarse en 2023"],
+["¿Qué organismos nacieron en Bretton Woods?","El FMI y el Banco Mundial, en 1944"],
+["¿Dónde tiene sede la OMC?","En Ginebra; fue creada en 1995"],
+["¿Cuántos ODS tiene la Agenda 2030?","Diecisiete, adoptados en 2015"],
+["¿Qué establece el Acuerdo de París?","Limitar el calentamiento muy por debajo de 2 °C; firmado en la COP21 de 2015"],
+["¿Dónde funciona la Corte Internacional de Justicia?","En La Haya","Allí también está la Corte Penal Internacional."],
+["¿Dónde tiene sede la Corte Interamericana de DDHH?","En San José de Costa Rica"],
+["¿Qué es el Pacto de San José de Costa Rica?","La Convención Americana sobre Derechos Humanos de 1969"],
+["★ ¿Dónde se firmó y dónde tiene sede el Tratado Antártico?","Se firmó en Washington en 1959; su Secretaría funciona en Buenos Aires desde 2004"],
+["¿Qué establece el Tratado Antártico?","Uso pacífico, libertad de investigación y suspensión de los reclamos de soberanía"],
+["¿Quién es el presidente de Estados Unidos?","Donald Trump, desde enero de 2025"],
+["¿Quién es el vicepresidente de Estados Unidos?","J.D. Vance"],
+["★ ¿Quién fue vicepresidente durante el mandato de George W. Bush?","Dick Cheney (2001-2009)","Con George H. W. Bush (1989-1993) fue Dan Quayle."],
+["★ ¿Qué cargo ocupó Antony Blinken?","Secretario de Estado de Estados Unidos con Biden (2021-2025)","El actual Secretario de Estado es Marco Rubio."],
+["¿Quién es el Secretario de Estado de Estados Unidos?","Marco Rubio"],
+["¿Cuál fue el orden de los últimos presidentes de EE.UU.?","Clinton, Bush hijo, Obama, Trump, Biden, Trump"],
+["¿Quién gobierna Brasil?","Luiz Inácio Lula da Silva","Brasil vota en octubre de 2026."],
+["★ ¿Quién es la presidenta de México?","Claudia Sheinbaum","Primera mujer presidenta de México, desde octubre de 2024."],
+["¿Quién asumió en Chile en 2026?","José Antonio Kast","Sucedió a Gabriel Boric."],
+["¿Quién gobierna Bolivia?","Rodrigo Paz, desde noviembre de 2025"],
+["¿Quién gobierna Uruguay?","Yamandú Orsi"],
+["¿Quién gobierna Paraguay?","Santiago Peña"],
+["¿Quién gobierna Colombia?","Gustavo Petro","Colombia eligió sucesor en 2026; asume en agosto."],
+["¿Quién gobierna Ecuador?","Daniel Noboa"],
+["¿Quién gobierna El Salvador?","Nayib Bukele"],
+["¿Qué países de la región eligieron presidente en 2026?","Costa Rica, Perú, Colombia y Brasil"],
+["¿Quién es el presidente de Rusia?","Vladimir Putin"],
+["¿Quién es el presidente de China?","Xi Jinping"],
+["¿Quién es el presidente de Francia?","Emmanuel Macron"],
+["¿Quién es el canciller de Alemania?","Friedrich Merz, desde 2025"],
+["¿Quién es el primer ministro del Reino Unido?","Keir Starmer"],
+["¿Quién es la primera ministra de Italia?","Giorgia Meloni"],
+["¿Quién es el presidente del gobierno español?","Pedro Sánchez"],
+["¿Quién es el primer ministro de India?","Narendra Modi"],
+["¿Quién es el presidente de Ucrania?","Volodímir Zelenski"],
+["¿Quién es el primer ministro de Israel?","Benjamín Netanyahu"],
+["¿Quién es el primer ministro de Canadá?","Mark Carney"],
+["★ ¿Dónde se celebraron los Juegos Olímpicos de 2024?","En París","Los de 2028 serán en Los Ángeles y los de 2032 en Brisbane."],
+["¿Dónde se juega el Mundial de fútbol 2026?","En Estados Unidos, México y Canadá"],
+["¿Dónde se jugará el Mundial 2030?","En España, Portugal y Marruecos, con partidos inaugurales en Argentina, Uruguay y Paraguay"],
+["¿Qué es la CELAC?","La Comunidad de Estados Latinoamericanos y Caribeños, sin Estados Unidos ni Canadá"],
+["¿Qué acuerdo cerraron Mercosur y la Unión Europea?","Un tratado de libre comercio anunciado en diciembre de 2024"],
+["¿Qué es la OCDE?","La organización de países desarrollados con sede en París; Argentina aspira a ingresar"],
+["¿Dónde tienen sede la UNESCO, la OIT y la FAO?","París, Ginebra y Roma"],
+["¿Quién es el Papa?","León XIV","Robert Prevost, primer papa estadounidense, elegido en mayo de 2025."]
+]},
+
+{n:"Letras, artes y ciencia", s:"Autores, obras y descubrimientos", c:[
+["★ ¿Quién escribió El segundo sexo?","Simone de Beauvoir, en 1949","Obra fundacional del feminismo del siglo XX."],
+["★ ¿Quién es el autor del Cantar de mio Cid?","Es anónimo; data de alrededor de 1200 y es el primer gran poema épico castellano"],
+["★ ¿Quién compuso Naranjo en flor?","Virgilio Expósito la música y Homero Expósito la letra, en 1944"],
+["★ ¿Quién compuso la ópera La Traviata?","Giuseppe Verdi, en 1853","Basada en La dama de las camelias, de Alejandro Dumas hijo."],
+["¿Qué otras óperas compuso Verdi?","Aida, Rigoletto, Nabucco y Otello"],
+["¿Quién compuso Carmen?","Georges Bizet"],
+["¿Quién compuso La Bohème y Tosca?","Giacomo Puccini"],
+["¿Quién compuso El barbero de Sevilla?","Gioachino Rossini"],
+["¿Quién compuso la Novena Sinfonía?","Ludwig van Beethoven"],
+["¿Quién compuso Cambalache y en qué año?","Enrique Santos Discépolo, en 1934"],
+["¿Dónde y cuándo murió Carlos Gardel?","En Medellín, Colombia, en un accidente aéreo en 1935"],
+["¿Quién compuso Libertango y Adiós Nonino?","Astor Piazzolla"],
+["¿Quién escribió Martín Fierro?","José Hernández, en 1872"],
+["¿Quién escribió Facundo?","Domingo Faustino Sarmiento, en 1845"],
+["¿Quién escribió El matadero?","Esteban Echeverría"],
+["¿Quién escribió Don Segundo Sombra?","Ricardo Güiraldes, en 1926"],
+["¿Quién escribió Rayuela?","Julio Cortázar, en 1963"],
+["¿Quién escribió El Aleph y Ficciones?","Jorge Luis Borges"],
+["¿Quién escribió El túnel y Sobre héroes y tumbas?","Ernesto Sábato"],
+["¿Quién escribió Boquitas pintadas?","Manuel Puig"],
+["¿Quién fue Alfonsina Storni?","Poeta argentina, murió en Mar del Plata en 1938"],
+["¿Quién escribió Don Quijote?","Miguel de Cervantes, en 1605"],
+["¿Quién escribió Cien años de soledad?","Gabriel García Márquez, en 1967; Nobel 1982"],
+["¿Qué latinoamericanos ganaron el Nobel de Literatura?","Gabriela Mistral, Miguel Ángel Asturias, Pablo Neruda, García Márquez, Octavio Paz y Mario Vargas Llosa"],
+["¿Quién escribió La Divina Comedia?","Dante Alighieri"],
+["¿Quién escribió Hamlet?","William Shakespeare"],
+["¿Quién escribió La Odisea?","Homero"],
+["¿Quién pintó la Mona Lisa?","Leonardo da Vinci"],
+["¿Quién pintó el Guernica y qué representa?","Pablo Picasso, en 1937; el bombardeo de esa ciudad en la Guerra Civil Española"],
+["¿Quién pintó La noche estrellada?","Vincent van Gogh"],
+["¿Quién fue Benito Quinquela Martín?","El pintor de La Boca y sus escenas portuarias"],
+["¿Quiénes fueron Antonio Berni y Xul Solar?","Dos de los artistas plásticos argentinos más influyentes del siglo XX"],
+["¿Qué películas argentinas ganaron el Oscar?","La historia oficial (1986) y El secreto de sus ojos (2010)"],
+["¿Qué reconocimiento recibió el tango?","Patrimonio Cultural Inmaterial de la Humanidad, UNESCO 2009"],
+["¿Quién fue Mercedes Sosa?","La cantante tucumana, la voz de América Latina"],
+["¿Quién fue Atahualpa Yupanqui?","Compositor y guitarrista, fundador del folclore argentino moderno"],
+["¿Cuántos argentinos ganaron el Nobel?","Cinco"],
+["¿Quiénes son los Nobel argentinos?","Saavedra Lamas y Pérez Esquivel en Paz; Houssay y Milstein en Medicina; Leloir en Química"],
+["¿Por qué recibió el Nobel Houssay?","Por sus estudios sobre la hipófisis, en 1947"],
+["¿Por qué recibió el Nobel Milstein?","Por los anticuerpos monoclonales, en 1984"],
+["¿Qué aportó René Favaloro?","El bypass coronario, en 1967"],
+["¿Quién fue Marie Curie?","Física y química, única persona con Nobel en dos ciencias distintas"],
+["¿Quién publicó la teoría de la evolución?","Charles Darwin, en El origen de las especies (1859)"],
+["¿Quién formuló la teoría de la relatividad?","Albert Einstein, en 1905 y 1915"],
+["¿Quién descubrió la penicilina?","Alexander Fleming, en 1928"],
+["¿Quiénes describieron la estructura del ADN?","Watson y Crick, en 1953"],
+["¿Quién creó la tabla periódica?","Dmitri Mendeléyev, en 1869"],
+["¿Qué organismo argentino financia la ciencia?","El CONICET"],
+["¿Qué hace INVAP?","Fabrica reactores nucleares, satélites y radares; es de Río Negro"],
+["¿Qué son los SAOCOM?","Satélites argentinos de observación con radar, de CONAE e INVAP"],
+["¿Cuándo nació la web?","Tim Berners-Lee la creó en 1989; internet viene de ARPANET (1969)"],
+["¿Quién fue Alan Turing?","El matemático que fundó la computación moderna y descifró Enigma"],
+["¿Cuándo se lanzó ChatGPT?","En noviembre de 2022, por OpenAI"]
+]},
+
+{n:"Geografía y cultura general", s:"Argentina y el mundo en datos", c:[
+["¿Cuál es el pico más alto de América?","El Aconcagua, 6.961 metros, en Mendoza"],
+["¿Cuál es la provincia más extensa?","Buenos Aires"],
+["¿Cuál es la provincia más pequeña?","Tucumán"],
+["¿Cuál es la ciudad más austral de Argentina?","Ushuaia"],
+["¿Cuántos habitantes tiene Argentina?","Alrededor de 46 millones (censo 2022)"],
+["¿Cuál es la capital de Río Negro?","Viedma"],
+["¿Cuál es la capital de Chubut?","Rawson"],
+["¿Cuál es la capital de Santa Cruz?","Río Gallegos"],
+["¿Cuál es la capital de Chaco?","Resistencia"],
+["¿Cuál es la capital de Misiones?","Posadas"],
+["¿Cuál es la capital de Entre Ríos?","Paraná"],
+["¿Cuál es la capital de La Pampa?","Santa Rosa"],
+["¿Cuál es la capital de Neuquén?","Neuquén"],
+["¿Cuál es la capital de Catamarca?","San Fernando del Valle de Catamarca"],
+["¿Cuál es la capital de Jujuy?","San Salvador de Jujuy"],
+["¿Cuál es la capital de Tucumán?","San Miguel de Tucumán"],
+["¿Cuál es la capital de la provincia de Buenos Aires?","La Plata, fundada en 1882 por Dardo Rocha"],
+["¿Cuál es el río más caudaloso del país?","El Paraná"],
+["¿Qué ríos forman el Río de la Plata?","El Paraná y el Uruguay"],
+["¿Cuál es el lago más grande de Argentina?","El lago Argentino, en Santa Cruz"],
+["¿Dónde está el glaciar Perito Moreno?","En el Parque Nacional Los Glaciares, Santa Cruz"],
+["¿Dónde están las Cataratas del Iguazú?","En Misiones, en la frontera con Brasil"],
+["Nombrá sitios argentinos Patrimonio de la Humanidad","Iguazú, Los Glaciares, Península Valdés, Cueva de las Manos, Ischigualasto-Talampaya, Quebrada de Humahuaca, Misiones Jesuíticas, Qhapaq Ñan, Los Alerces y la ESMA"],
+["¿Qué es la Cuenca del Plata?","El sistema hídrico compartido por Argentina, Brasil, Bolivia, Paraguay y Uruguay"],
+["¿Qué es el Acuífero Guaraní?","Una de las mayores reservas de agua dulce subterránea del mundo"],
+["¿Cuántos países limitan con Argentina?","Cinco: Chile, Bolivia, Paraguay, Brasil y Uruguay"],
+["¿Cuál es la base antártica argentina más antigua?","Orcadas, desde 1904"],
+["¿Cuáles son las regiones geográficas argentinas?","NOA, NEA, Cuyo, Pampeana, Patagonia y Antártida"],
+["¿Cuál es el país más poblado del mundo?","India, que superó a China en 2023"],
+["¿Cuál es el país más extenso?","Rusia"],
+["¿Cuál es el río más largo del mundo?","El Amazonas o el Nilo, según el criterio de medición"],
+["¿Cuál es la montaña más alta del mundo?","El Everest, 8.849 metros"],
+["¿Cuál es la capital de Australia?","Canberra"],
+["¿Cuál es la capital de Canadá?","Ottawa"],
+["¿Cuál es la capital de Brasil?","Brasilia"],
+["¿Cuál es la capital de Turquía?","Ankara"],
+["¿Cuál es la capital de Sudáfrica?","Pretoria es la administrativa; Ciudad del Cabo la legislativa"],
+["¿Cuántos países tiene África?","54"],
+["¿Cuántos países hay en el mundo según la ONU?","193 miembros más dos observadores: Vaticano y Palestina"],
+["¿En qué años ganó Argentina el Mundial?","1978, 1986 y 2022"],
+["¿Cuántas Copas América tiene Argentina?","Dieciséis, récord junto a Uruguay superado en 2024"],
+["¿Qué se conmemora el 12 de octubre?","El Día del Respeto a la Diversidad Cultural"],
+["¿Qué se conmemora el 20 de junio?","El Día de la Bandera, por la muerte de Belgrano en 1820"],
+["¿Qué se conmemora el 17 de agosto?","La muerte de San Martín en 1850, en Boulogne-sur-Mer"],
+["¿Qué se conmemora el 11 de septiembre?","El Día del Maestro, por la muerte de Sarmiento en 1888"],
+["¿Cuál es la flor nacional?","El ceibo"],
+["¿Cuál es el ave nacional?","El hornero"]
+]},
+{n:"Salta productiva y jornadas", s:"Litio, conocimiento y corredor", c:[
+["¿Qué es Eramine y qué opera en Salta?","La filial argentina del grupo francés Eramet; opera el proyecto de litio Centenario-Ratones","Su socio minoritario es la china Tsingshan, con el 49%."],
+["¿Por qué es histórico Centenario-Ratones?","Fue el primer proyecto de litio en producción de Salta y el cuarto del país","La planta se inauguró en julio de 2024 y produjo su primer carbonato en diciembre de 2024."],
+["¿Qué método de extracción usa Centenario-Ratones?","Extracción directa de litio (DLE), el primero del país con esa tecnología","Recupera litio en una semana frente a los 12 meses de las piletas de evaporación."],
+["¿Dónde está el salar Centenario-Ratones?","A unos 3.900 metros de altura, a 300 km al oeste de la capital, con acceso desde San Antonio de los Cobres"],
+["¿Cuánto invirtió Eramine en la fase 1 y cuánta capacidad tiene?","Más de US$ 800 millones para 24.000 toneladas anuales de carbonato de litio grado batería","Equivale a baterías para unos 600.000 autos eléctricos."],
+["¿Qué es la fase 2 de Eramine?","Una segunda planta por otros US$ 800 millones, sujeta al RIGI, que sumaría 30.000 toneladas"],
+["¿Qué porcentaje del litio mundial produce Argentina?","Cerca del 8%","El Triángulo del Litio concentra más de la mitad de los recursos mundiales."],
+["¿Cuántos proyectos de litio estaban en construcción en Argentina hacia 2026?","Cinco, que llevarían la producción nacional a unas 250.000 toneladas anuales"],
+["¿Cuál es el debate central sobre el litio en el NOA?","Agregado de valor: exportar carbonato o industrializar baterías; y el uso del agua en la Puna"],
+["¿Qué otros proyectos de litio hay en Salta?","Mariana (Ganfeng, Salar de Llullaillaco), Sal de Vida y Hombre Muerto Oeste, Rincón (Rio Tinto) y Pastos Grandes"],
+["¿Qué es la Ley de Economía del Conocimiento?","La Ley 27.506 de 2019, reformada en 2020, que da beneficios fiscales a software, biotecnología, audiovisual, IA y servicios exportables"],
+["¿Qué lugar ocupa la economía del conocimiento entre las exportaciones argentinas?","Es el tercer complejo exportador, detrás del agro y la energía, con más de US$ 8.000 millones anuales en servicios"],
+["¿Qué beneficios otorga la ley de economía del conocimiento?","Reducción de Ganancias, bono de crédito fiscal por contribuciones patronales y estabilidad fiscal"],
+["¿Qué relación tiene la economía del conocimiento con la minería?","La minería moderna demanda software, automatización, análisis de datos y perfiles técnicos locales"],
+["¿Qué es el Corredor Bioceánico de Capricornio?","Una ruta terrestre de unos 2.400 km que une el Atlántico con el Pacífico atravesando Brasil, Paraguay, el norte argentino y Chile"],
+["¿Dónde empieza el Corredor Bioceánico en Brasil?","En Campo Grande y Porto Murtinho, estado de Mato Grosso do Sul"],
+["¿Por dónde cruza el Corredor Bioceánico Paraguay?","Por el Chaco paraguayo, desde Carmelo Peralta hasta Pozo Hondo, frente a Misión La Paz"],
+["¿Por dónde entra el Corredor Bioceánico a Argentina?","Por Misión La Paz, en Salta; sigue por Tartagal, Salta capital y Jujuy"],
+["¿Por qué pasos sale el Corredor Bioceánico a Chile?","Por Jama (Jujuy) y Sico (Salta), hacia Antofagasta, Mejillones e Iquique"],
+["¿Qué obra es clave para el corredor del lado brasileño-paraguayo?","El puente sobre el río Paraguay entre Porto Murtinho y Carmelo Peralta"],
+["¿Qué falta del lado argentino para el corredor?","Pavimentar tramos de la Ruta Nacional 86 en el Chaco salteño y mejorar el Paso de Sico"],
+["¿Qué ventaja logística ofrece el Corredor Bioceánico?","Acorta unas dos semanas la llegada de la producción de Brasil y Paraguay a los mercados de Asia"],
+["¿Qué significa el corredor para Salta?","Convierte a Tartagal y el Chaco salteño en puerta de entrada logística del país en lugar de periferia"],
+["¿Qué es la ZICOSUR?","La Zona de Integración del Centro Oeste de América del Sur, foro de regiones subnacionales del norte argentino, Bolivia, Paraguay, Chile, Brasil y Perú"],
+["¿Cuántos senadores tiene Salta y quién preside la Cámara?","23, uno por departamento; la preside el vicegobernador Antonio Marocco"],
+["¿Cuántos miembros tiene la Corte de Justicia de Salta?","Nueve jueces","Es el máximo tribunal provincial."],
+["¿Cómo se designan los jueces de la Corte de Justicia de Salta?","Los propone el gobernador con acuerdo del Senado provincial"],
+["¿Qué es Salta Tech o el polo tecnológico salteño?","La iniciativa provincial de clúster de empresas de software y servicios basados en conocimiento, adherida a la ley nacional"],
+["¿Cuál es la principal empresa tabacalera cooperativa de Salta?","La Cooperativa de Productores Tabacaleros de Salta, con sede en Cerrillos"],
+["¿Qué ingenio azucarero es el más grande de Salta?","El ingenio San Martín del Tabacal, en Orán"]
+]},
+{n:"Jornada 1: visita a Eramine", s:"Lo que dijeron en la minera", c:[
+["¿Dónde están las oficinas de Eramine que visitaron?","En la zona de ingreso de San Lorenzo Chico, cerca de la capital salteña","La planta está a 300 km, en la Puna."],
+["¿Desde cuándo está Eramet en Salta?","Desde 2009, cuando empezó la exploración del salar","Quince años entre la llegada y el primer carbonato, en diciembre de 2024."],
+["¿Qué etapas atraviesa un proyecto minero antes de producir?","Exploración, prefactibilidad, factibilidad, construcción y operación","Prefactibilidad estima si el negocio cierra; factibilidad lo confirma con ingeniería de detalle."],
+["¿Qué es un estudio de prefactibilidad?","Una evaluación preliminar de si el yacimiento es técnica y económicamente viable"],
+["¿Qué es un estudio de factibilidad?","El estudio definitivo con ingeniería, costos y plan que habilita la decisión de inversión"],
+["¿Por qué Eramet eligió Salta?","Por la calidad del salar Centenario-Ratones, el marco legal minero provincial y la estabilidad que da el RIGI para grandes inversiones"],
+["¿Qué es la extracción directa de litio (DLE)?","Un proceso que separa el litio de la salmuera con filtros o resinas en horas, sin piletas de evaporación","Eramine es la primera del país en usarlo a escala industrial."],
+["¿Qué ventaja ambiental tiene el DLE frente a las piletas?","Reinyecta parte de la salmuera al salar y recupera el litio en días en vez de meses"],
+["¿Qué temperaturas mencionaron en la Puna?","Hasta 20 grados bajo cero","A casi 4.000 metros, con viento y muy baja humedad."],
+["¿Por qué la infraestructura en la Puna es tan cara?","Hay que llevar energía, agua, caminos, alojamiento y comunicaciones a un lugar remoto y de altura extrema"],
+["¿Qué esquemas de turnos mencionaron?","Rotativos, como 4 por 4 y 7 por 7: se trabaja esa cantidad de días en el campamento y se baja la misma cantidad","En algunos casos el traslado es en avión."],
+["¿Por qué no se usan turnos continuos de 30 días?","Por la altura y el aislamiento: el descanso en baja altura es una cuestión de salud y seguridad"],
+["¿Qué es el estándar IRMA?","La Initiative for Responsible Mining Assurance: una certificación independiente de minería responsable en ambiente, derechos humanos, trabajo y comunidades"],
+["¿Qué significaría que Eramine obtenga IRMA?","Estaría entre las primeras mineras de Argentina certificadas, lo que atrae inversores y clientes europeos"],
+["¿Por qué las mineras buscan certificaciones de minería responsable?","Porque las automotrices y los fondos exigen trazabilidad ambiental y social para comprar litio o financiar"],
+["¿Qué perfiles profesionales trabajan juntos en la operación?","Ingenieros químicos, informáticos, geólogos, ambientales y de procesos, en decisiones coordinadas","Punto para vos: la minería moderna es también software y datos."],
+["¿Qué acciones comunitarias mencionaron?","Becas para estudiantes de la zona de San Antonio de los Cobres y compras a proveedores locales","La localidad más cercana a la planta es Santa Rosa de los Pastos Grandes."],
+["¿Qué es la licencia social en minería?","La aceptación de la actividad por parte de las comunidades del territorio, más allá del permiso legal"],
+["¿Cuántos evaluadores habrá en la entrevista del sábado?","Ocho, de distintas especialidades, con preguntas de actualidad y sobre las jornadas"],
+["¿Qué es Eramet en el mundo?","Un grupo minero y metalúrgico francés, líder en manganeso y níquel, que entró al litio con Salta"],
+["¿Cuántos principios rectores declara Eramine y cuáles son?","Cinco: seguridad en el trabajo (cero daños), desarrollo local, vínculos sostenibles y transparentes, responsabilidad ambiental y mejora continua"],
+["¿Qué significa el principio de cero daños?","Que todas las personas regresen sanas y salvas a sus casas todos los días"],
+["¿Cuál es la visión declarada de Eramine?","Convertirse en un productor global de carbonato de litio de alta calidad, competitivo y sostenible"],
+["¿En qué departamento salteño está el salar Centenario-Ratones?","En Los Andes, a más de 3.800 metros, con temperaturas que bajan de -25 °C"],
+["¿Cuántas hectáreas de propiedades mineras tiene el proyecto?","67.000 hectáreas"],
+["¿Cuáles son los recursos estimados del salar?","15 millones de toneladas de LCE (carbonato de litio equivalente)"],
+["¿Cuál es la inversión total y la vida útil declaradas en el folleto?","Unos US$ 950 millones y más de 40 años de vida útil"],
+["¿Cuántas etapas tiene el proceso de la planta Fase 1?","Seis: preparación de salmuera, extracción directa, separación por membranas, evaporación forzada, extracción de boro y producción de carbonato"],
+["Etapa 1: ¿cómo se prepara la salmuera?","Se bombea de 20 pozos de hasta 400 m, se filtra y se ajusta el pH con ácido clorhídrico","1.600 m³/h de salmuera con 450 mg/L de litio."],
+["¿Cuántos filtros usa la preparación de salmuera?","Tres filtros con 300 elementos y 1.400 m² de área activa, dejando menos de 5 mg/L de sólidos"],
+["Etapa 2: ¿qué logra la unidad DLE?","Captura el litio con 90% de recuperación, a 20 °C y sin reactivos: el sólido se regenera solo con agua"],
+["¿Cuánta investigación hay detrás del sólido activo del DLE?","Diez años de I+D, 12 patentes y cerca de cinco años de pruebas"],
+["¿Cómo están organizadas las columnas de extracción?","36 columnas en configuración de carrusel de 3 columnas cada uno"],
+["¿Qué pasa con la salmuera agotada?","Vuelve al salar después de neutralizarse"],
+["Etapa 3: ¿qué hace la separación por membranas?","Purifica y concentra el litio y recupera agua mediante nanofiltración, intercambio iónico y ósmosis inversa"],
+["¿Qué elimina la nanofiltración?","Magnesio, calcio y sulfato, con 1.100 membranas y 40.000 m² a 8 bar"],
+["¿Qué logra la ósmosis inversa en la planta?","Concentra el litio a 5 g/L y recupera el 80% del agua, con 800 membranas a 40 bar"],
+["Etapa 4: ¿qué es la evaporación forzada?","Concentra el litio con vapor cogenerado por la planta eléctrica y recupera aún más agua","9 t/h de vapor a 190 °C."],
+["¿Qué dos pasos tiene la evaporación forzada?","Película descendente (22 g/L, 3.300 tubos de titanio) y evaporación flash (35 g/L, torre de 30 m, el punto más alto de la planta)"],
+["Etapa 5: ¿por qué se extrae el boro?","Es la última impureza antes del grado batería: entra a 1.500 mg/L y se elimina el 99%","Con dos separadores y 10 toneladas de carbón activado."],
+["Etapa 6: ¿cómo se produce el carbonato de litio?","Por precipitación, secado y micronización hasta pureza superior al 99,5%, grado batería"],
+["¿Qué tamaño tiene el carbonato tras la micronización?","d50 de 5 micrones: un millón de veces menos volumen que un grano de arena fina"],
+["¿A cuántos vehículos eléctricos equivalen las 24.000 toneladas anuales?","A unos 600.000"],
+["¿Cuántas horas hombre demandó la construcción?","Más de 7,5 millones, con más de 7.000 personas en el sitio"],
+["¿Qué cifras de construcción menciona el folleto?","8.500 toneladas de acero, 175 km de tuberías, 720 km de cables y 6.000 sensores instalados","Dato para vos: 6.000 sensores es una planta que vive de datos."],
+["¿Qué otras instalaciones tiene el sitio?","Planta de tratamiento de agua, campamento, planta piloto y un parque solar"],
+["¿Qué significa el 90% que se mencionó en la charla?","Recuperación de litio en la unidad DLE; no significa que el proceso sea 90% reciclable ni que no tenga impactos"],
+["¿Comprometerse con IRMA es lo mismo que estar certificado?","No: hay que distinguir compromiso, autoevaluación, auditoría independiente y resultado"],
+["¿Dónde está cada parte del equipo de Eramine?","Una parte en Salta capital y otra en el salar, en Los Andes"]
+]},
+{n:"Jornada 2: geopolítica de minerales", s:"Charla de relaciones internacionales", c:[
+["¿Qué son los minerales críticos?","Minerales esenciales para la economía y la seguridad, cuyo suministro puede interrumpirse","No significa que se agoten, sino que dependen de pocos proveedores."],
+["¿Qué son las tierras raras?","Un grupo de 17 elementos químicos: los 15 lantánidos más escandio e itrio","Indispensables para imanes, turbinas eólicas, celulares y armamento."],
+["¿Qué país domina las tierras raras?","China, con cerca del 70% de la extracción y alrededor del 90% del procesamiento"],
+["¿Cuáles son las tres etapas de la cadena de un mineral?","Extracción, procesamiento o refinación, y uso final","El valor se concentra en las etapas finales, no en la extracción."],
+["¿Por qué un celular es ejemplo de interdependencia mineral?","Requiere decenas de elementos de distintos países: litio, cobalto, tierras raras, cobre, oro"],
+["¿Qué es la geoeconomía?","El uso de herramientas económicas (comercio, inversiones, minerales, finanzas) como instrumentos de poder entre Estados"],
+["¿Qué limita a Argentina para ser gran productora de litio?","Falta de inversión propia y de tecnología de procesamiento; por eso se asocia con empresas extranjeras"],
+["¿Cuál fue la crítica al auto eléctrico en la charla?","Que no es limpio en todas sus etapas: minería intensiva, electricidad de origen fósil y baterías con corta vida útil"],
+["¿Qué es el CIADI?","El Centro Internacional de Arreglo de Diferencias Relativas a Inversiones, tribunal del Banco Mundial en Washington","Argentina es uno de los países más demandados de su historia."],
+["¿Qué es un fondo soberano?","Un fondo estatal que invierte ingresos extraordinarios, típicamente de recursos naturales, para el largo plazo","El de Noruega es el mayor del mundo."],
+["¿Qué es la Hidrovía Paraguay-Paraná?","El corredor fluvial de 3.400 km desde Puerto Cáceres (Brasil) hasta Nueva Palmira (Uruguay) por el que sale la mayor parte de la agroexportación argentina"],
+["¿Cuál es el puerto de contenedores más grande del mundo?","Shanghái, seguido por Singapur"],
+["¿Qué relación tienen Paraguay y Taiwán?","Paraguay es el único país de Sudamérica que reconoce a Taiwán; Argentina reconoce a la República Popular China desde 1972"],
+["¿Cómo compara el financiamiento chino con el estadounidense?","China presta con menos condiciones pero menos transparencia; Estados Unidos y los organismos multilaterales ponen más requisitos"],
+["¿Qué es el swap con China?","Un intercambio de monedas entre bancos centrales que Argentina usa como reserva; supera los US$ 18.000 millones"],
+["¿Quién tiene el dominio de los recursos naturales en Argentina?","Las provincias, según el artículo 124 de la Constitución","Por eso la política minera es provincial y no nacional."],
+["¿Qué es el Código de Minería?","La ley nacional de 1886 que regula concesiones; las provincias son la autoridad de aplicación"],
+["¿Cuándo son las elecciones de medio término en Estados Unidos?","El 3 de noviembre de 2026: se renueva toda la Cámara de Representantes y un tercio del Senado"],
+["¿Cuándo son las elecciones presidenciales de Brasil?","El 4 de octubre de 2026, con balotaje el 25","Lula busca la reelección; Jair Bolsonaro está inhabilitado y condenado."],
+["¿Quién es el candidato del bolsonarismo en 2026?","Flávio Bolsonaro, senador e hijo de Jair Bolsonaro","Dato para verificar el viernes: la oposición discutió también a Tarcísio de Freitas."],
+["¿Qué país tiene las mayores reservas probadas de petróleo?","Venezuela, seguida por Arabia Saudita"],
+["¿Cuál es el mayor productor de petróleo del mundo?","Estados Unidos, gracias al shale; Arabia Saudita y Rusia le siguen"],
+["¿Qué es la OPEP?","La Organización de Países Exportadores de Petróleo, creada en 1960, liderada por Arabia Saudita","Ampliada como OPEP+ con Rusia."],
+["¿Qué es el Triángulo Dorado?","La zona entre Myanmar, Laos y Tailandia, histórica productora de opio","Distinto del Triángulo del Litio."],
+["¿Qué país tiene el mayor arsenal nuclear?","Rusia, con unas 5.500 ojivas; Estados Unidos le sigue"],
+["¿Qué es la OTAN y su artículo 5?","La alianza atlántica de 1949; el artículo 5 dice que un ataque a un miembro es un ataque a todos"],
+["¿Cuánto territorio perdió México frente a Estados Unidos en 1848?","Cerca de la mitad, por el Tratado de Guadalupe Hidalgo","Texas, California, Arizona, Nuevo México y más."],
+["¿Por qué la rivalidad China-Estados Unidos es una oportunidad para Argentina?","Ambas potencias compiten por asegurar litio y cobre, lo que da margen para negociar inversiones y tecnología"],
+["¿Qué porcentaje del comercio mundial va por mar?","Alrededor del 80% en volumen"],
+["¿Qué son los cuellos de botella marítimos?","Pasos estratégicos como Malaca, Ormuz, Suez y Panamá por donde pasa gran parte del comercio y la energía"],
+["¿Qué es la Franja y la Ruta?","La iniciativa china de infraestructura global lanzada en 2013; Argentina adhirió en 2022"],
+["¿Cuál fue la idea final de la charla?","Lo importante no es de dónde viene un recurso sino hacia dónde va: pensar la cadena completa y el largo plazo"],
+["¿Qué fue la Guerra del Pacífico o del Salitre?","El conflicto de 1879-1884 en el que Chile venció a Perú y Bolivia por el control de Atacama, rica en salitre y guano"],
+["¿Qué perdió Bolivia en la Guerra del Pacífico?","Su salida soberana al océano Pacífico, el departamento del Litoral"],
+["¿Qué relación hay entre el salitre y Alfred Nobel?","El nitrato era insumo de explosivos; Nobel patentó la dinamita en 1867 y luego se industrializó el TNT"],
+["¿Qué monto mínimo exige el RIGI?","Inversiones mayores a US$ 200 millones, con estabilidad fiscal, aduanera y cambiaria por 30 años"],
+["¿Por qué Malvinas es más que soberanía territorial?","Por la Zona Económica Exclusiva, la proyección antártica y los hidrocarburos de la cuenca Malvinas"],
+["¿Cuál es la postura de Milei sobre Malvinas?","Alineamiento con Estados Unidos y Reino Unido y convertir a Argentina en potencia económica creíble como camino a la soberanía"],
+["¿Qué empresa estatal china domina la agroexportación en Argentina?","COFCO, que integra acopio, procesamiento y puertos"],
+["¿Qué ferrocarril rehabilitó China en el norte argentino?","El Belgrano Cargas, clave para bajar el costo del flete del NOA a los puertos"],
+["¿Qué minerales se consideran críticos?","Cobre, litio, níquel, cobalto, grafito, magnesio, galio y germanio, entre otros"],
+["¿Qué controles de exportación aplicó China?","Sobre galio y germanio, insumos de chips, para presionar a sus competidores"],
+["¿Qué es el nearshoring y el friendshoring?","Relocalizar producción cerca del mercado o en países aliados para reducir dependencia de China"],
+["¿Con qué leyes impuso Trump aranceles sin el Congreso?","La sección 232 de la Trade Expansion Act (seguridad nacional) y la 301 de la Trade Act de 1974","El artículo I, sección 8 de la Constitución da al Congreso la facultad de fijar aranceles."],
+["¿Qué es el dumping?","Vender por debajo del costo gracias a subsidios estatales para desplazar competidores"],
+["¿Qué porcentaje del petróleo mundial pasa por Ormuz?","Cerca del 20%; conecta el Golfo Pérsico con el Índico"],
+["¿Qué une el Canal de Suez y qué estrecho lo antecede?","El Mar Rojo con el Mediterráneo; Bab el-Mandeb es su entrada desde el Índico"],
+["¿Qué es el estrecho de Malaca?","El paso entre el Índico y el Mar de China Meridional, vital para el comercio y la energía de Asia"],
+["¿Cómo reinterpreta Estados Unidos la Doctrina Monroe?","Vetando la presencia militar o de infraestructura crítica china en América Latina, como en el Canal de Panamá"],
+["¿Qué porcentaje de la agroexportación sale por la Hidrovía?","Más del 85%"],
+["¿Qué es el puerto de Chancay?","El megapuerto peruano financiado por la china Cosco que acorta 12 a 15 días el viaje a Asia"],
+["¿Qué son los Tratados Bilaterales de Inversión?","Acuerdos que protegen inversores extranjeros y habilitan demandas ante el CIADI"],
+["¿Qué es una cadena global de valor?","La fragmentación de la producción en varios países: diseño, insumos, ensamblaje y distribución"],
+["¿Qué ilustra el caso de Nintendo?","Una cadena global: diseño en Japón, chips de TSMC en Taiwán, ensamblado en China o Vietnam"],
+["¿Qué pasó con Jack Ma?","Criticó al sistema financiero chino en 2020 y el régimen canceló la salida a bolsa de Ant Group"],
+["¿Qué establece la CONVEMAR?","La Convención del Mar: 200 millas de Zona Económica Exclusiva","China ignora el fallo de 2016 sobre el Mar de China Meridional."],
+["¿Qué es el CFIUS?","El comité de Estados Unidos que revisa inversiones extranjeras por seguridad nacional"],
+["¿Qué es la CHIPS Act?","La ley estadounidense de 2022 que subsidia la fabricación local de semiconductores"],
+["¿Qué es Project Vault?","La reserva estratégica estadounidense de minerales críticos anunciada en febrero de 2026"],
+["¿Qué es Pax Silica?","Una iniciativa de Estados Unidos y aliados para blindar la cadena de semiconductores e IA frente a China"],
+["¿Quién es Marco Rubio y qué agenda tiene?","Secretario de Estado, de línea dura frente a China, Cuba y Venezuela"],
+["¿Qué caracterizó a la presidencia de Clinton?","Globalización, NAFTA y la entrada de China a la OMC en 2001"],
+["¿Qué caracterizó a Bush hijo?","Seguridad post 11-S y guerras de Afganistán e Irak"],
+["¿Qué caracterizó a Obama?","Multilateralismo, pivote hacia Asia y auge del shale"],
+["¿Qué caracterizó a Biden?","Política industrial con la Inflation Reduction Act y sanciones tecnológicas a China"],
+["¿Qué es un lame duck?","Un presidente o legislador cuyo mandato termina y pierde poder efectivo"],
+["¿Cómo logró Estados Unidos la independencia energética?","Con el fracking en la cuenca Permian; importa sobre todo de Canadá y México"],
+["¿Qué es el Club de París?","El foro de países acreedores creado en 1956 a partir de la renegociación de la deuda argentina"],
+["¿Cuáles son los cuatro grandes rubros exportadores argentinos?","Agroindustria, energía de Vaca Muerta, automotriz (pick-ups) y minería"],
+["¿Qué es Taca Taca y quién lo desarrolla?","Un megaproyecto de cobre en la Puna salteña de First Quantum Minerals, con inversión estimada superior a US$ 3.500 millones"],
+["¿Qué impulsa el gobierno con las rutas nacionales?","Concesionarlas al sector privado con peajes para reducir el gasto en obra pública"],
+["¿Quiénes son los competidores de Argentina en litio?","Australia (roca dura, primer productor), Chile (salares) y China"],
+["¿Qué limita a Bolivia en litio?","Uyuni tiene las mayores reservas brutas pero alto magnesio y falta de seguridad jurídica"],
+["¿Existe una OPEP del litio?","No; el precio lo fija el mercado de commodities y la demanda de baterías"],
+["¿Cómo puede Argentina aprovechar la rivalidad EE.UU.-China?","Capital chino para infraestructura y plantas; capital estadounidense para energía y tecnología, negociando valor agregado"],
+["¿Cuáles son los fondos soberanos más conocidos?","GPFG de Noruega (el mayor), ADIA de Abu Dhabi, PIF saudí, GIC y Temasek de Singapur"],
+["¿Qué es el sistema interestatal?","La red de Estados soberanos que cooperan y compiten sin un gobierno mundial"],
+["¿Qué es el poder de cuello de botella?","La ventaja de controlar una etapa difícil de reemplazar: un refinado, un estrecho o una patente"],
+["¿Una inversión extranjera garantiza transferencia tecnológica?","No; hay que negociar formación, proveedores locales e investigación"],
+["¿Quién paga inicialmente un arancel?","El importador, ante la aduana del país que lo aplica"],
+["¿Qué diferencia hay entre geopolítica, geoeconomía y geoestrategia?","Geopolítica: territorio y poder; geoeconomía: herramientas económicas como poder; geoestrategia: planificación de acciones en espacios concretos"]
+]},
+{n:"Conflictos, teorías y bloques", s:"Geopolítica profunda", c:[
+["¿Qué plantea la teoría del Heartland?","Mackinder: quien domine el núcleo continental de Eurasia domina el mundo"],
+["¿Qué plantea la teoría del Rimland?","Spykman: la clave está en las costas periféricas de Eurasia, para contener al Heartland"],
+["¿Qué plantea Alfred Mahan?","Que el poder mundial se construye con el dominio marítimo y las rutas oceánicas, como hizo Estados Unidos"],
+["¿Cuántos Estados poseen armas nucleares?","Nueve: EE.UU., Rusia, China, Francia, Reino Unido, India, Pakistán, Israel y Corea del Norte"],
+["¿Qué es la disuasión nuclear?","Impedir una agresión haciendo que su costo esperado sea inaceptable"],
+["¿Cuánto fue el gasto militar mundial en 2025?","Cerca de 2,9 billones de dólares, según SIPRI"],
+["¿Qué nuevo compromiso de gasto asumió la OTAN en 2025?","Llegar al 5% del PBI en defensa y seguridad hacia 2035"],
+["¿Qué fue el Memorando de Budapest?","El acuerdo de 1994 por el que Ucrania entregó las armas nucleares soviéticas a cambio de garantías de seguridad"],
+["¿Qué recursos tiene Ucrania?","Tierras raras, litio, gas, titanio y el chernozem, suelo fértil clave para la alimentación mundial"],
+["¿Por qué importa el Mar Negro?","Conecta a Rusia con el Mediterráneo y saca los granos de Europa del Este"],
+["¿Qué países forman el G7?","Alemania, Canadá, Estados Unidos, Francia, Italia, Japón y Reino Unido; participa la Unión Europea"],
+["¿Qué países integran los BRICS en 2026?","Brasil, Rusia, India, China, Sudáfrica, Egipto, Etiopía, Irán, Emiratos Árabes Unidos e Indonesia","Arabia Saudita fue invitada; verificá si se la cuenta como miembro pleno."],
+["¿Qué buscan los BRICS?","Desdolarización del comercio y un banco propio, el Nuevo Banco de Desarrollo, alternativo al FMI y al Banco Mundial"],
+["¿Qué es la Organización de Cooperación de Shanghái?","Un foro euroasiático de seguridad y cooperación con diez miembros, entre ellos China, Rusia, India, Pakistán e Irán","No es una OTAN asiática: no tiene defensa colectiva."],
+["¿Qué significa Sur Global?","Una categoría política de países que buscan más voz frente a las estructuras dominadas por Occidente"],
+["¿Qué es el Esequibo?","La región de Guyana que Venezuela reclama, más del 60% de su territorio, tras hallazgos de petróleo offshore"],
+["¿Qué problema concentra la frontera EE.UU.-México?","Fentanilo, cocaína y migración; es prioridad de seguridad nacional estadounidense"],
+["¿Cuándo se creó el Estado de Israel?","En 1948, tras la partición de Palestina aprobada por la ONU en 1947 y el fin del mandato británico"],
+["¿Qué fue la Nakba?","El desplazamiento de cientos de miles de palestinos en la guerra de 1948"],
+["¿Qué guerras árabe-israelíes hubo después de 1948?","Suez 1956, Seis Días 1967 y Yom Kipur 1973"],
+["¿Qué ocupó Israel en la Guerra de los Seis Días?","Cisjordania, Gaza, el Golán y el Sinaí"],
+["¿Qué pasó el 7 de octubre de 2023?","El ataque de Hamás que desató la ofensiva israelí en Gaza"],
+["¿Qué es el Eje de la Resistencia?","La red respaldada por Irán: Hezbolá en Líbano, hutíes en Yemen y milicias en Irak y Siria"],
+["¿Qué es el Collar de Perlas?","La red de puertos chinos en el Índico: Sittwe, Hambantota, Gwadar y Yibuti, para asegurar el petróleo del Golfo"],
+["¿Por qué el Tíbet es estratégico para China?","Es la torre de agua de Asia, donde nacen los grandes ríos, y barrera frente a India"],
+["¿Por qué Taiwán es el epicentro tecnológico?","TSMC fabrica los chips más avanzados del mundo; además es la salida marítima de China al Pacífico"],
+["¿Quiénes disputan Cachemira?","India, Pakistán y China, tres potencias nucleares"],
+["¿Qué pasa en el Sahel?","Francia pierde influencia mientras Rusia (Wagner) y China (infraestructura) ganan terreno"],
+["¿Qué mineral hace estratégico al Congo?","El cobalto, esencial para baterías"],
+["¿Qué es la Franja y la Ruta?","La estrategia china de préstamos e infraestructura que asegura materias primas como respaldo de pago"],
+["¿Por qué el Canal de Panamá es un cuello de botella?","Concentra comercio y acorta la ruta entre Atlántico y Pacífico en una obra difícil de sustituir"],
+["¿Cuáles son los principales chokepoints marítimos?","Ormuz, Bab el-Mandeb/Suez, Malaca, Panamá, Bósforo y Gibraltar"],
+["¿Cómo estructurar una respuesta oral en la entrevista?","Idea principal, un ejemplo concreto y una conclusión, en menos de dos minutos"],
+["¿Qué hacer si no sabés un dato exacto en la entrevista?","Reconocerlo, explicar lo que sí sabés y razonar sin inventar"],
+["¿Cuál es una opinión equilibrada sobre minería para la entrevista?","Desarrollo y empleo, pero con ambiente, comunidades, transparencia y valor agregado"]
+]}
+];
+
+/* =========================================================
+   MAPAS CONCEPTUALES
+   ========================================================= */
+const MAPS = [
+{t:"Cómo se organiza el Estado",s:"Constitución de 1853, reformada en 1994",core:"República federal · 3 poderes",b:[
+ {h:"Ejecutivo",i:["<b>Presidente</b> + Vice, 4 años, una reelección","<b>Jefe de Gabinete</b>: informa al Congreso, removible por censura","<b>9 ministerios</b>","DNU: no penal, tributario, electoral ni partidos"]},
+ {h:"Legislativo",i:["<b>Diputados</b> 257 · pueblo · 4 años · mitades","<b>Senado</b> 72 · provincias · 6 años · tercios","Total <b>329</b>","Impuestos nacen en Diputados; coparticipación en Senado","Veto → insiste con 2/3"]},
+ {h:"Judicial",i:["<b>Corte Suprema</b>: 5 miembros, preside Rosatti","Designación: Presidente + 2/3 Senado","<b>Consejo de la Magistratura</b> (art. 114)","Jueces hasta los 75 años"]},
+ {h:"Órganos de control",i:["<b>AGN</b> art. 85","<b>Defensor del Pueblo</b> art. 86","<b>Ministerio Público</b> art. 120","Juicio político: Diputados acusa, Senado juzga"]},
+ {h:"Sucesión",i:["1. Vicepresidente (Villarruel)","2. Pres. provisional Senado (Abdala)","3. Pres. Diputados (Menem)"]},
+ {h:"Reforma 1994",i:["Pacto de Olivos 1993","Ballotage 45% / 40%+10","Tercer senador","CABA autónoma (art. 129)","Tratados DDHH (75.22)"]}
+]},
+{t:"Quién es quién hoy",s:"Gobierno nacional, septiembre de 2026",core:"Javier Milei · La Libertad Avanza",b:[
+ {h:"Casa Rosada",i:["Vice: <b>Villarruel</b>","Jefe de Gabinete: <b>Santilli</b> (jun 2026)","Sec. General: <b>Karina Milei</b>","Asesor: Santiago Caputo"]},
+ {h:"Ministros",i:["Economía: <b>Caputo</b>","Cancillería: <b>Quirno</b>","Justicia: <b>Mahiques</b> (mar 2026)","Seguridad: <b>Monteoliva</b>","Defensa: <b>Presti</b>","Capital Humano: <b>Pettovello</b>","Salud: <b>Lugones</b>","Desregulación: <b>Sturzenegger</b>"]},
+ {h:"Bancos",i:["BCRA: <b>Bausili</b>","Banco Nación: <b>Wasserman</b> (dic 2025)","FMI: Georgieva"]},
+ {h:"Congreso",i:["Diputados: <b>Martín Menem</b>","Senado provisional: <b>Abdala</b>","Bloque PRO: <b>Ritondo</b>","Bullrich: senadora"]},
+ {h:"Calendario",i:["Legislativas <b>26 oct 2025</b>: ganó LLA","Presidenciales <b>2027</b>","Reformas 2026: laboral, impositiva, presupuesto"]},
+ {h:"Gobernadores clave",i:["Bs. As.: <b>Kicillof</b>","CABA: <b>J. Macri</b>","Córdoba: <b>Llaryora</b>","Santa Fe: <b>Pullaro</b>","Neuquén: <b>Figueroa</b>","Salta: <b>Sáenz</b>"]}
+]},
+{t:"Economía argentina",s:"Indicadores, producción y territorio",core:"¿Qué produce y qué debe Argentina?",b:[
+ {h:"Precios",i:["IPC jul-26: <b>2,1%</b> mes · <b>33,8%</b> anual","REM 2026: ~30%","INDEC mide · BCRA proyecta"]},
+ {h:"Cuentas públicas",i:["Superávit primario","Mayor gasto: <b>jubilaciones</b>","Coparticipación: <b>Ley 23.548</b>","ARCA reemplazó a AFIP"]},
+ {h:"Campo",i:["Soja/maíz/trigo: <b>zona núcleo</b>","Maní: <b>Córdoba</b>","Vino: <b>Mendoza</b>","Limón y azúcar: <b>Tucumán</b>","Yerba: <b>Misiones</b>","Tabaco: <b>Salta, Jujuy</b>"]},
+ {h:"Energía y minería",i:["Petróleo/gas: <b>Vaca Muerta</b> (Neuquén)","Litio: <b>Salta, Jujuy, Catamarca</b>","Cobre: San Juan, Taca Taca (Salta)","RIGI: incentivo por 30 años"]},
+ {h:"Dólar y deuda",i:["Riesgo país: <b>EMBI · JP Morgan</b>","MEP vs CCL","Bandas de flotación (2025)","Swap con China"]},
+ {h:"Rutas",i:["<b>RN 40</b>: la más larga, Cabo Vírgenes–La Quiaca","<b>RN 9</b>: Bs. As.–norte","<b>RN 3</b>: costa atlántica"]}
+]},
+{t:"Historia argentina",s:"Línea de tiempo en seis tramos",core:"1810 → 2026",b:[
+ {h:"Independencia",i:["<b>1810</b> Primera Junta","<b>1812</b> bandera, Tucumán, Éxodo","<b>1813</b> Asamblea, Salta, San Lorenzo","<b>1816</b> Independencia","<b>1817-18</b> Chacabuco, <b>Maipú</b> (San Martín)"]},
+ {h:"Organización",i:["<b>1852</b> Caseros","<b>1853</b> Constitución","<b>1861</b> Pavón","<b>1862-80</b> Mitre, Sarmiento, Avellaneda","<b>1880</b> Roca, federalización"]},
+ {h:"Orden conservador",i:["<b>1890</b> Parque → Pellegrini","<b>1892</b> L. Sáenz Peña","<b>1904</b> Palacios, 1° socialista","<b>1912</b> Ley Sáenz Peña","<b>1916</b> Yrigoyen","<b>1918</b> Reforma (Córdoba)"]},
+ {h:"Golpes y peronismo",i:["<b>1930</b> Uriburu, 1° de facto","<b>1943</b> GOU","<b>1945</b> 17 de octubre","<b>1946</b> Perón","<b>1955</b> Libertadora","<b>1958</b> Frondizi vence a Balbín"]},
+ {h:"Violencia y dictadura",i:["<b>1966</b> Onganía","<b>1969</b> Cordobazo","<b>1973</b> Cámpora, Perón","<b>1976</b> Videla","<b>1982</b> Malvinas"]},
+ {h:"Democracia",i:["<b>1983</b> Alfonsín","<b>1985</b> Juicio a las Juntas","<b>1991</b> Convertibilidad","<b>2001</b> crisis","<b>2007</b> CFK y Fabiana Ríos","<b>2023</b> Milei"]}
+]},
+{t:"Siglo XX mundial",s:"Guerras, bloques y símbolos",core:"1914 → 1991",b:[
+ {h:"Guerras mundiales",i:["<b>1914-18</b> PGM · Versalles 1919","<b>1939-45</b> SGM","<b>1941</b> Barbarroja, Pearl Harbor","<b>1944</b> <b>Overlord</b> = Normandía","<b>1945</b> Hiroshima, ONU"]},
+ {h:"Personajes",i:["<b>Churchill</b>: Nobel Literatura 1953","Hitler 1933 · Stalin · Roosevelt","Mao 1949 · Castro 1959","<b>Yeltsin</b>: 1° pres. Rusia 1991"]},
+ {h:"Guerra Fría",i:["Plan Marshall 1948","Corea 1950-53","Muro de Berlín 1961-89","Misiles Cuba 1962","Vietnam hasta 1975"]},
+ {h:"Espacio",i:["Sputnik <b>1957</b>","Gagarin <b>1961</b>","<b>Apolo 11: 20 jul 1969</b>","Armstrong, Aldrin, Collins"]},
+ {h:"Fin de siglo",i:["Perestroika 1985","URSS cae <b>1991</b>","Mandela 1994","11-S 2001"]},
+ {h:"Pensadores",i:["<b>Sócrates</b>: «solo sé que no sé nada»","Descartes: cogito","Montesquieu: división de poderes","Marx: El Capital"]}
+]},
+{t:"Salta en un vistazo",s:"Lo que un evaluador salteño espera que sepas",core:"Salta la Linda · 1582",b:[
+ {h:"Poder",i:["Gobernador <b>Sáenz</b> (hasta 2027)","Vice <b>Marocco</b>","Intendente <b>Durand</b>","Legislatura: 23 senadores + 60 diputados","23 departamentos"]},
+ {h:"Historia",i:["Fundación: <b>Lerma, 1582</b>","<b>20 feb 1813</b> batalla de Salta (Belgrano)","<b>17 jun 1821</b> muere Güemes","Milagro: terremoto de 1692"]},
+ {h:"Geografía",i:["Limita con <b>6 provincias + 3 países</b>","Ríos: Bermejo, Juramento, Pilcomayo","PN: El Rey, Los Cardones, <b>Baritú</b>","San Bernardo ~1.450 m","La Polvorilla ~4.200 m"]},
+ {h:"Economía",i:["<b>Litio</b>: Arizaro, Rincón, Pocitos","<b>Cobre</b>: Taca Taca · Oro: Lindero","Tabaco, poroto, azúcar (Orán)","Turismo: Cafayate, Cachi, Tren a las Nubes"]},
+ {h:"Cultura",i:["Torrontés · Serenata a Cafayate","Chalchaleros · Falú · Cuchi Leguizamón","Dávalos, Castilla","MAAM: Niños del Llullaillaco","Tamal: Chicoana"]},
+ {h:"Trampas",i:["Humahuaca es <b>Jujuy</b>","Paso de Jama es por Jujuy","UNSa 1972 · UCASAL 1963"]}
+]},
+{t:"El mundo en 2026",s:"Organismos y líderes",core:"Quién manda y dónde se decide",b:[
+ {h:"ONU",i:["1945 · 193 miembros · Nueva York","SG: <b>Guterres</b>","Consejo de Seguridad: 15 · 5 con veto","CIJ y CPI: La Haya"]},
+ {h:"América",i:["OEA 1948 · Washington · <b>Ramdin</b>","Corte IDH: San José","Mercosur 1991 + Bolivia","<b>Tratado Antártico</b>: firmado Washington, sede Bs. As."]},
+ {h:"Economía global",i:["FMI y BM: Bretton Woods 1944","OMC: Ginebra 1995","G20 2026: <b>EE.UU.</b> · 2018: Argentina","OCDE: París"]},
+ {h:"Estados Unidos",i:["Trump · Vance","Sec. Estado: <b>Rubio</b> (ex <b>Blinken</b>)","Bush hijo → <b>Cheney</b>; Bush padre → Quayle"]},
+ {h:"Región",i:["Brasil <b>Lula</b> · México <b>Sheinbaum</b>","Chile <b>Kast</b> · Bolivia <b>Paz</b>","Uruguay Orsi · Paraguay Peña","Colombia Petro · Ecuador Noboa"]},
+ {h:"Deporte",i:["JJOO <b>2024 París</b> · 2028 L.A.","Mundial <b>2026</b>: EE.UU.-México-Canadá","Mundial 2030: partidos en Argentina"]}
+]},
+{t:"Letras, música y ciencia",s:"Las obras que caen en cultura general",core:"Autor ↔ Obra",b:[
+ {h:"Ópera",i:["<b>La Traviata</b>, Aida, Rigoletto → Verdi","Carmen → Bizet","La Bohème, Tosca → Puccini","El barbero → Rossini"]},
+ {h:"Tango",i:["<b>Naranjo en flor</b> → Expósito (H. letra, V. música)","Cambalache → Discépolo 1934","Gardel † Medellín 1935","Libertango → Piazzolla"]},
+ {h:"Letras españolas",i:["<b>Cantar de mio Cid</b> → anónimo, ~1200","Don Quijote → Cervantes 1605","Cien años de soledad → García Márquez"]},
+ {h:"Pensamiento",i:["<b>El segundo sexo</b> → Simone de Beauvoir 1949","El Príncipe → Maquiavelo","El contrato social → Rousseau"]},
+ {h:"Letras argentinas",i:["Martín Fierro → Hernández 1872","Facundo → Sarmiento","Rayuela → Cortázar","El Aleph → Borges","El túnel → Sábato"]},
+ {h:"Ciencia",i:["5 Nobel: Saavedra Lamas, Houssay, Leloir, Pérez Esquivel, Milstein","Favaloro: bypass","Darwin 1859 · Einstein 1905 · ADN 1953","Blockchain → Bitcoin 2009"]}
+]},
+{t:"Geografía argentina",s:"Capitales, récords y símbolos",core:"23 provincias + CABA · 46 millones",b:[
+ {h:"Récords",i:["Más extensa: <b>Buenos Aires</b>","Más chica: <b>Tucumán</b>","Más austral: <b>Ushuaia</b>","Pico: <b>Aconcagua</b> 6.961 m","Río: <b>Paraná</b>"]},
+ {h:"Capitales que confunden",i:["Río Negro → <b>Viedma</b>","Chubut → <b>Rawson</b>","Santa Cruz → <b>Río Gallegos</b>","Chaco → <b>Resistencia</b>","Misiones → <b>Posadas</b>","Entre Ríos → <b>Paraná</b>","La Pampa → <b>Santa Rosa</b>"]},
+ {h:"Patrimonio UNESCO",i:["Iguazú · Los Glaciares · Valdés","Cueva de las Manos","Ischigualasto-Talampaya","Humahuaca · Qhapaq Ñan","ESMA (2023)"]},
+ {h:"Regiones",i:["NOA · NEA · Cuyo","Pampeana · Patagonia","Antártida: base Orcadas 1904"]},
+ {h:"Fechas patrias",i:["20 jun: Belgrano 1820","17 ago: San Martín 1850","11 sep: Sarmiento 1888","12 oct: Diversidad Cultural"]},
+ {h:"Símbolos",i:["Flor: <b>ceibo</b>","Ave: <b>hornero</b>","Mundiales: 78 · 86 · 22"]}
+]},
+{t:"Salta productiva y las jornadas",s:"Lo que vas a ver el jueves y el viernes",core:"Litio · Conocimiento · Corredor",b:[
+ {h:"Eramine",i:["Grupo francés <b>Eramet</b> + china Tsingshan","<b>Centenario-Ratones</b>: 1° litio de Salta","<b>DLE</b>: extracción directa, 1° del país","~3.900 m · 300 km · San Antonio de los Cobres","US$ 800 M · <b>24.000 t/año</b>","Fase 2: +US$ 800 M con RIGI"]},
+ {h:"Litio en contexto",i:["Argentina: <b>~8%</b> mundial","Triángulo: Argentina-Chile-Bolivia","5 proyectos → 250.000 t","Debate: <b>valor agregado</b> y <b>agua</b>"]},
+ {h:"Economía del conocimiento",i:["<b>Ley 27.506</b> (2019, ref. 2020)","Software, biotec, audiovisual, <b>IA</b>","<b>3° complejo exportador</b>: +US$ 8.000 M","Beneficios: Ganancias, crédito fiscal, estabilidad","Tu pregunta: perfiles técnicos locales para la minería"]},
+ {h:"Corredor Bioceánico",i:["<b>Capricornio</b>: ~2.400 km","Brasil: Campo Grande–<b>Porto Murtinho</b>","Paraguay: Carmelo Peralta–Pozo Hondo","Argentina: <b>Misión La Paz → Tartagal → Salta → Jujuy</b>","Chile: Jama y <b>Sico</b> → Antofagasta","Obra clave: puente Porto Murtinho","Ahorra ~2 semanas hacia Asia"]},
+ {h:"Instituciones (viernes)",i:["Senado: <b>23</b>, preside <b>Marocco</b>","Corte de Justicia: <b>9 jueces</b>","Gobernador propone, Senado acuerda"]},
+ {h:"Sábado",i:["Examen <b>10:00</b>, laboratorios UCASAL","Entrevista <b>12:00</b>, mismo día","Llevar CV impreso, ir vestido para entrevista","Los organizadores del jueves te entrevistan el sábado"]}
+]},
+{t:"Jornada 1: Eramine y su proceso",s:"Del salar al carbonato grado batería",core:"Centenario-Ratones · 24.000 t · 40 años",b:[
+ {h:"Cifras",i:["<b>67.000 ha</b> · <b>15 Mt LCE</b>","<b>US$ 950 M</b> · +40 años","Exploración 2009 → 1° carbonato <b>dic 2024</b>","Los Andes · +3.800 m · <b>-25 °C</b>"]},
+ {h:"Proceso (6 etapas)",i:["1. Salmuera: 20 pozos, 400 m, HCl","2. <b>DLE</b>: 90%, 20 °C, sin reactivos, 36 columnas","3. Membranas: nano + iónico + ósmosis (80% agua)","4. Evaporación forzada: 22 → 35 g/L","5. Boro: 99% eliminado","6. Li₂CO₃ >99,5%, 5 µm"]},
+ {h:"Construcción",i:["7,5 M horas hombre · 7.000 personas","8.500 t acero · 175 km tuberías","720 km cables · <b>6.000 sensores</b>"]},
+ {h:"Principios",i:["Cero daños","Desarrollo local","Vínculos transparentes","Responsabilidad ambiental","Mejora continua"]},
+ {h:"IRMA y comunidad",i:["Compromiso ≠ certificación","Becas zona de los Cobres","Licencia social","Turnos 4x4 / 7x7"]},
+ {h:"Para la entrevista",i:["90% = recuperación DLE, no reciclaje","Valor agregado = software, datos, laboratorios","Equilibrio: empleo + agua + comunidades"]}
+]},
+{t:"Jornada 2: comercio, minerales y poder",s:"Geoeconomía aplicada",core:"¿Quién controla la cadena?",b:[
+ {h:"Conceptos",i:["Geopolítica / geoeconomía / geoestrategia","<b>Minerales críticos</b>: esenciales + riesgo","<b>Tierras raras</b>: 17, China refina ~90%","Cuello de botella: refinado, estrecho, patente"]},
+ {h:"EE.UU.",i:["Aranceles: sec. <b>232</b> y <b>301</b>","<b>Project Vault</b> (feb 2026) · <b>Pax Silica</b>","CFIUS · CHIPS Act","Rubio: China, Cuba, Venezuela","Permian: independencia energética"]},
+ {h:"China",i:["Galio y germanio: controles","<b>COFCO</b> · Belgrano Cargas · <b>Chancay</b>","Franja y Ruta · Collar de Perlas","Jack Ma / Ant Group","CONVEMAR: ignora fallo 2016"]},
+ {h:"Rutas",i:["<b>Ormuz</b> 20% petróleo","Suez / Bab el-Mandeb","Malaca · Panamá","Hidrovía: <b>85%</b> agroexportación"]},
+ {h:"Argentina",i:["RIGI: >US$ 200 M, 30 años","Art. 124: recursos provinciales","<b>CIADI</b> + TBI · Club de París 1956","Taca Taca: First Quantum, US$ 3.500 M","Litio: rivales Australia, Chile"]},
+ {h:"Historia",i:["Guerra del Pacífico 1879-84: salitre","Bolivia sin mar","Nobel: dinamita 1867","Clinton → Bush → Obama → Trump → Biden → Trump"]}
+]},
+{t:"Conflictos, teorías y bloques",s:"El mapa del poder en 2026",core:"Heartland · Rimland · Sea Power",b:[
+ {h:"Teorías",i:["<b>Mackinder</b>: Heartland euroasiático","<b>Spykman</b>: Rimland costero","<b>Mahan</b>: poder marítimo"]},
+ {h:"Seguridad",i:["<b>9</b> potencias nucleares","Gasto 2025: <b>US$ 2,9 billones</b> (SIPRI)","OTAN: <b>5%</b> del PBI a 2035","Budapest 1994: Ucrania sin nucleares"]},
+ {h:"Bloques",i:["<b>G7</b>: 7 + UE","<b>BRICS</b>: 10-11 miembros, NDB, desdolarización","<b>OCS</b>: 10, Eurasia, no es OTAN","Sur Global"]},
+ {h:"Medio Oriente",i:["Israel <b>1948</b> · Nakba","1956 · <b>1967</b> · 1973","<b>7 oct 2023</b> Hamás","Eje de la Resistencia (Irán)"]},
+ {h:"Asia y África",i:["Taiwán: <b>TSMC</b>","Tíbet: torre de agua","Cachemira: 3 nucleares","Sahel: Wagner vs Francia","Congo: cobalto"]},
+ {h:"América",i:["<b>Esequibo</b>: Venezuela vs Guyana","Frontera México: fentanilo","Malvinas: ZEE + Antártida","Panamá: Doctrina Monroe"]}
+]}
+];
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
+const state={mod:0,mode:'flash',i:0,flipped:false,seen:{},wrongOnly:false,order:null,mapIdx:0};
+const key=(m,c)=>m+':'+c;
+(function(){const exam=new Date(2026,8,12);document.getElementById('cd').textContent=Math.max(0,Math.ceil((exam-new Date())/86400000));})();
+
+function deck(){
+  let out=[];
+  if(state.wrongOnly){M.forEach((mod,mi)=>mod.c.forEach((c,ci)=>{if(state.seen[key(mi,ci)]==='no')out.push({m:mi,ci,c});}));}
+  else out=M[state.mod].c.map((c,ci)=>({m:state.mod,ci,c}));
+  if(state.order&&state.order.len===out.length&&state.order.mod===(state.wrongOnly?'w':state.mod)) return state.order.idx.map(i=>out[i]);
+  return out;
+}
+function stats(mi){let k=0,n=0;M[mi].c.forEach((_,ci)=>{const v=state.seen[key(mi,ci)];if(v==='yes')k++;if(v==='no')n++;});return{k,n,total:M[mi].c.length};}
+
+function renderRail(){
+  const el=document.getElementById('modlist');el.innerHTML='';
+  M.forEach((mod,i)=>{
+    const s=stats(i);const b=document.createElement('button');
+    b.className='mod'+(!state.wrongOnly&&i===state.mod?' on':'');
+    b.innerHTML='<span class="nm">'+mod.n+'</span><span class="mt"><span>'+mod.s+'</span><span>'+s.k+'/'+s.total+'</span></span><span class="bar"><i style="width:'+Math.round(s.k/s.total*100)+'%"></i></span>';
+    b.onclick=()=>{state.mod=i;state.mapIdx=i;state.wrongOnly=false;state.i=0;state.flipped=false;state.order=null;document.getElementById('btnWrong').textContent='Repasar solo las falladas';if(state.mode==='pomo')state.mode='flash';render();};
+    el.appendChild(b);
+  });
+}
+
+function render(){
+  renderRail();
+  document.querySelectorAll('.modes button').forEach(b=>b.classList.toggle('on',b.dataset.mode===state.mode));
+  const stage=document.getElementById('stage');
+  if(state.mode==='pomo'){pomo();return;}
+  if(state.mode==='map'){maps();return;}
+  const d=deck();
+  if(!d.length){stage.innerHTML='<div class="empty"><h3>Nada para repasar acá</h3><p>'+(state.wrongOnly?'Todavía no marcaste ninguna ficha como fallada. Estudiá un módulo y volvé.':'Módulo vacío.')+'</p></div>';return;}
+  if(state.i>=d.length)state.i=0;
+  if(state.mode==='flash')flash(d);else sprint(d);
+}
+
+/* ---------- tarjetas ---------- */
+function flash(d){
+  const it=d[state.i],c=it.c,stage=document.getElementById('stage');
+  stage.innerHTML='<div class="card" id="fc" tabindex="0" role="button" aria-label="Girar la ficha"><span class="side">'+(state.flipped?'Respuesta':'Pregunta')+'</span><span class="num">'+(state.i+1)+' / '+d.length+'</span><div class="q">'+esc(c[0])+'</div>'+
+    (state.flipped?'<div class="a">'+esc(c[1])+'</div>'+(c[2]?'<div class="tip">'+esc(c[2])+'</div>':''):'<div class="hintline">Tocá la ficha o apretá espacio para ver la respuesta</div>')+'</div>'+
+    (state.flipped?'<div class="judge"><button class="no">No la sabía</button><button class="yes">La sabía</button></div>':'')+
+    '<div class="nav"><button id="prev">← Anterior</button><button id="next">Siguiente →</button><span>'+M[it.m].n+'</span></div>';
+  const fc=document.getElementById('fc');
+  fc.onclick=()=>{state.flipped=!state.flipped;render();};
+  fc.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();state.flipped=!state.flipped;render();}};
+  if(state.flipped){stage.querySelector('.no').onclick=()=>mark(it,'no');stage.querySelector('.yes').onclick=()=>mark(it,'yes');}
+  document.getElementById('prev').onclick=()=>{state.i=(state.i-1+d.length)%d.length;state.flipped=false;render();};
+  document.getElementById('next').onclick=()=>{state.i=(state.i+1)%d.length;state.flipped=false;render();};
+  fc.focus({preventScroll:true});
+}
+function mark(it,v){
+  state.seen[key(it.m,it.ci)]=v;
+  const d=deck();
+  state.i=state.wrongOnly?Math.min(state.i,Math.max(0,d.length-1)):(state.i+1)%d.length;
+  state.flipped=false;render();
+}
+
+/* ---------- sprint ---------- */
+let sp=null,spTimer=null;
+function distract(it){const pool=M[it.m].c.map(x=>x[1]).filter(a=>a!==it.c[1]);const w=[],u=new Set();let g=0;while(w.length<3&&g++<300){const x=pool[Math.floor(Math.random()*pool.length)];if(x&&!u.has(x)){u.add(x);w.push(x);}}return [it.c[1],...w].sort(()=>Math.random()-.5);}
+function sprint(d){
+  const stage=document.getElementById('stage');
+  if(!sp){
+    stage.innerHTML='<div class="empty"><h3>Sprint de 90 segundos</h3><p>Opción múltiple contra reloj sobre el módulo elegido. Mide lo que el examen mide: qué tan rápido recuperás un dato.</p><div style="margin-top:22px"><button class="bigbtn" id="go">Empezar</button></div></div>';
+    document.getElementById('go').onclick=()=>{
+      sp={score:0,asked:0,t:90,q:null,order:shuffle(d.map((_,i)=>i)),p:0};
+      spTimer=setInterval(()=>{if(!sp){clearInterval(spTimer);return;}sp.t--;if(sp.t<=0){clearInterval(spTimer);sp.done=true;}if(state.mode==='sprint')render();},1000);
+      render();
+    };return;
+  }
+  if(sp.done){
+    stage.innerHTML='<div class="empty"><h3>'+sp.score+' de '+sp.asked+'</h3><p>'+(sp.asked?Math.round(sp.score/sp.asked*100):0)+'% de aciertos. Las falladas ya están en el mazo de repaso.</p><div style="margin-top:22px"><button class="bigbtn" id="go">Otra vez</button></div></div>';
+    document.getElementById('go').onclick=()=>{sp=null;render();};return;
+  }
+  if(!sp.q){const it=d[sp.order[sp.p%sp.order.length]];sp.p++;sp.q={it,opts:distract(it)};}
+  const {it,opts}=sp.q;
+  stage.innerHTML='<div class="sprintbar"><b>'+sp.score+' / '+sp.asked+'</b><b class="clock">'+sp.t+'″</b></div><div class="card" style="min-height:auto;cursor:default"><div class="q">'+esc(it.c[0])+'</div></div><div class="opts">'+opts.map((o,i)=>'<button class="opt" data-o="'+i+'">'+esc(o)+'</button>').join('')+'</div>';
+  stage.querySelectorAll('.opt').forEach(b=>{b.onclick=()=>{const ch=opts[+b.dataset.o];sp.asked++;if(ch===it.c[1])sp.score++;state.seen[key(it.m,it.ci)]=ch===it.c[1]?'yes':'no';sp.q=null;render();};});
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ---------- pomodoro ---------- */
+const P={work:25,short:5,long:15,phase:'work',left:25*60,running:false,done:0,timer:null};
+function pomoTick(){
+  if(P.left>0){P.left--;}
+  if(P.left<=0){
+    P.running=false;clearInterval(P.timer);P.timer=null;beep();
+    if(P.phase==='work'){P.done++;P.phase=(P.done%4===0)?'long':'short';}
+    else P.phase='work';
+    P.left=(P.phase==='work'?P.work:P.phase==='short'?P.short:P.long)*60;
+  }
+  if(state.mode==='pomo')pomo();
+}
+function beep(){try{const a=new (window.AudioContext||window.webkitAudioContext)();const o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=660;g.gain.value=.08;o.start();setTimeout(()=>{o.frequency.value=880;},180);setTimeout(()=>{o.stop();a.close();},420);}catch(e){}}
+function suggest(){let best=0,bp=2;M.forEach((m,i)=>{const s=stats(i);const p=s.k/s.total;if(p<bp){bp=p;best=i;}});return best;}
+function pomo(){
+  const stage=document.getElementById('stage');
+  const mm=String(Math.floor(P.left/60)).padStart(2,'0'),ss=String(P.left%60).padStart(2,'0');
+  const sug=suggest(),s=stats(sug);
+  const label=P.phase==='work'?'Bloque de estudio':P.phase==='short'?'Descanso corto':'Descanso largo';
+  const dots=[0,1,2,3].map(i=>'<i class="'+(i<(P.done%4)?'done':'')+'"></i>').join('');
+  stage.innerHTML='<div class="pomo"><div><div class="phase '+(P.phase==='work'?'work':'rest')+'">'+label+'</div><div class="time">'+mm+':'+ss+'</div>'+
+    '<div class="ctl"><button class="bigbtn" id="pstart">'+(P.running?'Pausar':P.left===(P.phase==='work'?P.work:P.phase==='short'?P.short:P.long)*60?'Empezar':'Seguir')+'</button><button class="ghost" id="pskip">Saltar fase</button><button class="ghost" id="preset">Reiniciar</button></div>'+
+    '<div class="tally">'+dots+' '+P.done+' pomodoro'+(P.done===1?'':'s')+' hoy · descanso largo cada 4</div>'+
+    '<div class="cfg">Duración: <button data-w="25" class="'+(P.work===25?'on':'')+'">25/5</button><button data-w="40" class="'+(P.work===40?'on':'')+'">40/8</button><button data-w="50" class="'+(P.work===50?'on':'')+'">50/10</button></div></div>'+
+    '<aside>'+(P.phase==='work'?
+      '<h3>Para este bloque</h3><p>El módulo con menos avance es <b>'+M[sug].n+'</b> ('+s.k+' de '+s.total+' sabidas'+(s.n?', '+s.n+' falladas':'')+').</p><p>Regla: primero el mapa, después tarjetas, y si sobran 5 minutos, un sprint.</p><button class="go" data-m="'+sug+'" data-to="map">Abrir el mapa</button> <button class="go" data-m="'+sug+'" data-to="flash">Ir a las tarjetas</button>':
+      '<h3>Descansá de verdad</h3><p>Levantate, tomá agua, mirá lejos. No revises el celular: la memoria consolida lo aprendido mientras no la estás usando.</p><p>Cuando suene el aviso, volvé al siguiente bloque.</p>')+
+    '</aside></div>';
+  document.getElementById('pstart').onclick=()=>{if(P.running){P.running=false;clearInterval(P.timer);P.timer=null;}else{P.running=true;P.timer=setInterval(pomoTick,1000);}pomo();};
+  document.getElementById('pskip').onclick=()=>{P.left=0;pomoTick();};
+  document.getElementById('preset').onclick=()=>{P.running=false;clearInterval(P.timer);P.timer=null;P.phase='work';P.left=P.work*60;pomo();};
+  stage.querySelectorAll('.cfg button').forEach(b=>{b.onclick=()=>{const w=+b.dataset.w;P.work=w;P.short=w===25?5:w===40?8:10;P.long=w===25?15:w===40?20:25;if(!P.running){P.phase='work';P.left=P.work*60;}pomo();};});
+  stage.querySelectorAll('aside .go').forEach(b=>{b.onclick=()=>{state.mod=+b.dataset.m;state.mapIdx=+b.dataset.m;state.wrongOnly=false;state.i=0;state.flipped=false;state.order=null;state.mode=b.dataset.to;render();};});
+}
+
+/* ---------- mapas ---------- */
+function maps(){
+  const stage=document.getElementById('stage');
+  const mp=MAPS[state.mapIdx]||MAPS[0];
+  stage.innerHTML='<div class="mapnav">'+MAPS.map((m,i)=>'<button class="'+(i===state.mapIdx?'on':'')+'" data-i="'+i+'">'+M[i].n+'</button>').join('')+'</div>'+
+    '<div class="map"><h3>'+mp.t+'</h3><div class="sub">'+mp.s+'</div><div style="text-align:center"><span class="core">'+mp.core+'</span></div><div class="trunk"></div>'+
+    '<div class="branches">'+mp.b.map(br=>'<div class="branch"><h4>'+br.h+'</h4><ul>'+br.i.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>').join('')+'</div></div>'+
+    '<div class="nav"><button id="tocards">Practicar este módulo con tarjetas →</button></div>';
+  stage.querySelectorAll('.mapnav button').forEach(b=>{b.onclick=()=>{state.mapIdx=+b.dataset.i;state.mod=state.mapIdx;render();};});
+  document.getElementById('tocards').onclick=()=>{state.mod=state.mapIdx;state.wrongOnly=false;state.i=0;state.flipped=false;state.order=null;state.mode='flash';render();};
+}
+
+/* ---------- controles ---------- */
+document.querySelectorAll('.modes button').forEach(b=>{b.onclick=()=>{if(spTimer){clearInterval(spTimer);spTimer=null;}sp=null;state.mode=b.dataset.mode;state.flipped=false;if(state.mode==='map')state.mapIdx=state.mod;render();};});
+document.getElementById('btnWrong').onclick=()=>{state.wrongOnly=!state.wrongOnly;state.i=0;state.flipped=false;state.order=null;if(state.mode==='pomo'||state.mode==='map')state.mode='flash';document.getElementById('btnWrong').textContent=state.wrongOnly?'Volver a todos los módulos':'Repasar solo las falladas';render();};
+document.getElementById('btnShuffle').onclick=()=>{const base=state.wrongOnly?(()=>{let n=0;M.forEach((mod,mi)=>mod.c.forEach((c,ci)=>{if(state.seen[key(mi,ci)]==='no')n++;}));return n;})():M[state.mod].c.length;state.order={mod:state.wrongOnly?'w':state.mod,len:base,idx:shuffle([...Array(base).keys()])};state.i=0;state.flipped=false;if(state.mode!=='flash'&&state.mode!=='sprint')state.mode='flash';render();};
+document.getElementById('btnReset').onclick=()=>{state.seen={};render();};
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='BUTTON'&&e.key!==' ')return;
+  if(state.mode==='flash'){const d=deck();if(!d.length)return;
+    if(e.key==='ArrowRight'){state.i=(state.i+1)%d.length;state.flipped=false;render();}
+    if(e.key==='ArrowLeft'){state.i=(state.i-1+d.length)%d.length;state.flipped=false;render();}
+    if(state.flipped&&(e.key==='1'||e.key==='2')){mark(d[state.i],e.key==='1'?'no':'yes');}
+  }
+});
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+render();
+</script>
+</body>
+</html>
